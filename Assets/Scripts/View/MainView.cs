@@ -19,7 +19,7 @@ namespace agora
             public Canvas MainCavas;
             public Button ConnectionStatusBtn;
             public Button ConfirmButton;
-            public Button sendMessage;
+            //public Button sendMessage;
             private Image connectStatusImage;
             public Image settingCanvasConnectStatusImage;
             public InputField serverTextInputField;
@@ -47,6 +47,7 @@ namespace agora
                 SetUnityDefaultSettings();
                 MainViewPersenter = new MainViewPersenter(this);
                 MainViewPersenter.OnAwake();  
+                JSON.InitJsonMapper();
             }
 
             void Start()
@@ -99,7 +100,7 @@ namespace agora
                 Application.Logger.Info("MainView ", "InitOnBtnClickListener");
                 ConnectionStatusBtn.onClick.AddListener(OnConnectionStatusButtonClick);
                 ConfirmButton.onClick.AddListener(OnConfirmButtonClick);
-                sendMessage.onClick.AddListener(OnSendMessageClick);
+                //sendMessage.onClick.AddListener(OnSendMessageClick);
             }
 
             void OnConnectionStatusButtonClick()

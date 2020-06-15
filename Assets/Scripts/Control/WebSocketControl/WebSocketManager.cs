@@ -189,7 +189,8 @@ namespace agora
                 }
 
                 webSocket.Send(buffer);
-                Application.Logger.Info(Tag, "Send message byte  buffer = " + buffer);
+                String m = System.Text.Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+                Application.Logger.Info(Tag, "Send message string = " + m);
                 return (int)ERROR_CODE.ERROR_OK;       
             }
 

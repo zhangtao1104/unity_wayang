@@ -10,7 +10,7 @@ namespace agora
             {
                 get 
                 {
-                    return "ws://114.236.93.153:8083/iov/websocket/dual?topic=232";
+                    return "ws://114.236.93.153:8083/iov/websocket/dual?topic=";
                 }
             }
 
@@ -45,7 +45,7 @@ namespace agora
                 }
             }
 
-            private static string webSocket_Url = "ws://114.236.93.153:8083/iov/websocket/dual?topic=232";
+            private static string webSocket_Url = "ws://114.236.93.153:8083/iov/websocket/dual?topic=";
             public static string WebSocket_Url 
             {
                 get

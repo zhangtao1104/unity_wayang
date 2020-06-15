@@ -7,6 +7,13 @@ namespace agora
     {
         public class JSON
         {
+            public static void InitJsonMapper()
+            {
+                JsonMapper.RegisterImporter<int, long>((int value) =>
+                {
+                    return (long)value;
+                });
+            }
             public static T JsonToObject<T>(string JsonMessage)
             {
                 return JsonMapper.ToObject<T>(JsonMessage);

@@ -80,6 +80,7 @@ namespace agora
                     ServerMessage clientMessage = MessageComand.GetMessageFromQueue(MessageType.CLIENT);
                     if (clientMessage != null)
                     {
+                        Application.Logger.Info(TAG, "Message: " + clientMessage.ToString());
                         Send(System.Text.Encoding.UTF8.GetBytes(MessageComand.ServerMessageToJson(clientMessage)));
                     }
                 }
@@ -153,14 +154,14 @@ namespace agora
             public void OnWebSocketConnect(WebSocket webSocket)
             {
                 Application.Logger.Info(TAG, System.Reflection.MethodBase.GetCurrentMethod().Name);
-                string s = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"create\", \"info\":{\"context\":\"\",\"appId\":\"5db0d12c40354100abd7a8a0adaa1fb8\",\"handler\":\"\"},\"extra\":{}}";
-                MessageComand.SendJsonToMessageQueue(MessageType.SERVER, s);
+                //string s = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"create\", \"info\":{\"context\":\"\",\"appId\":\"5db0d12c40354100abd7a8a0adaa1fb8\",\"handler\":\"\"},\"extra\":{}}";
+                //MessageComand.SendJsonToMessageQueue(MessageType.SERVER, s);
 
-                string s1 = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"joinChannel\", \"info\":{\"context\":\"\",\"appId\":{\"test\":\"hehe\"},\"handler\":\"\"},\"extra\":{}}";
-                MessageComand.SendJsonToMessageQueue(MessageType.SERVER, s1);
-            
-                string s2 = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\":\"setVideoEncoderConfiguration\", \"info\": {\"dimensions\":{\"width\": 1280, \"height\": 720}, \"frameRate\": 15, \"bitrate\": 0, \"minBitrate\": -1, \"orientationMode\": 0, \"minFrameRate\": -1, \"degradationPreference\": 0}}}";
-                MessageComand.SendJsonToMessageQueue(MessageType.SERVER, s2);
+                //string s1 = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"joinChannel\", \"info\":{\"context\":\"\",\"appId\":\"345445\",\"handler\":\"\"},\"extra\":{}}";
+                //MessageComand.SendJsonToMessageQueue(MessageType.SERVER, s1);
+
+                //string s2 = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\":\"setVideoEncoderConfiguration\", \"info\": {\"dimensions\":{\"width\": 1280, \"height\": 720}, \"frameRate\": 15, \"bitrate\": 0, \"minBitrate\": -1, \"orientationMode\": 0, \"minFrameRate\": -1, \"degradationPreference\": 0}}}";
+                //MessageComand.SendJsonToMessageQueue(MessageType.SERVER, s2);
 
                 MainViewPersenter.OnWebSocketConnect();
             }
@@ -173,9 +174,11 @@ namespace agora
 
             public void OnWebSocketError(WebSocket webSocket, Exception ex)
             {
-                 Application.Logger.Info(TAG, System.Reflection.MethodBase.GetCurrentMethod().Name);
-
-                 MainViewPersenter.OnWebSocketDisConnect();
+                Application.Logger.Info(TAG, System.Reflection.MethodBase.GetCurrentMethod().Name);
+                if (MainViewPersenter != null)
+                {
+                    MainViewPersenter.OnWebSocketDisConnect();
+                }
             }
 
             public void OnWebSocketReceiveMessage(WebSocket webSocket, string message)

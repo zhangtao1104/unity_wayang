@@ -26,6 +26,12 @@ namespace agora
                 set;
             }
 
+            public Int64 sequence
+            {
+                get;
+                set;
+            }
+
             public JsonData info
             {
                 get;
@@ -38,7 +44,7 @@ namespace agora
                 set;
             }
 
-            public string ToString() 
+            public override string ToString() 
             {
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.Append("type: " + type + ",");
@@ -50,7 +56,11 @@ namespace agora
                 {
                     stringBuilder.Append("cmd: " + cmd + ",");
                 }
-                if (info.ToString() != null)
+                if (sequence != null)
+                {
+                    stringBuilder.Append("sequence: " + sequence + ",");
+                }
+                if (info != null && info.ToString() != null)
                 {
                     stringBuilder.Append("info: " + info.ToString() + ",");
                 }

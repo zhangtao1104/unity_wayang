@@ -10,13 +10,14 @@ namespace agora
         public class ServerMessageFactory
         {
             private static string TAG = "ServerMessageFactory";
-            public static ServerMessage CreateServerMessage(TYPE type, string device, string cmd, Dictionary<string, object> info, Dictionary<string, object> extra) 
+            public static ServerMessage CreateServerMessage(TYPE type, string device, string cmd, System.Int64 sequence, Dictionary<string, object> info, Dictionary<string, object> extra) 
             {
                 Application.Logger.Info(TAG, System.Reflection.MethodBase.GetCurrentMethod().Name);
                 ServerMessage message = new ServerMessage();
                 message.type = (int)type;
                 message.device = device;
                 message.cmd = cmd;
+                message.sequence = sequence;
                 if (info != null)
                 {
                     message.info = new JsonData();
@@ -37,6 +38,10 @@ namespace agora
                         else if (a.Value is float)
                         {
                             message.info[a.Key] = (float)a.Value;
+                        }
+                        else if (a.Value is uint)
+                        {
+                            message.info[a.Key] = (uint)a.Value;
                         }
                     }
                 }

@@ -41,6 +41,10 @@ namespace agora
 
             public void SendMessageToQueue(MessageType type, ServerMessage message)
             {
+                if (message == null)
+                {
+                    Application.Logger.Error(TAG, "message is null----");
+                }
                 switch(type)
                 {
                     case MessageType.SERVER:
