@@ -22,9 +22,7 @@ namespace agora
             private VideoRawDataManager videoRawDataManager = null;
             private PacketObserver packetObserver = null;
             private MetadataObserver metadataObserver = null;
-            private readonly string localVideoSurfaceName = "localVideoSurface";
-            private List<uint> remoteUIdList = new List<uint>();
-            
+            private StreamViewManager streamViewManager = null;             
             private RtcEnginePresenter rtcEnginePresenter {
                 get;
                 set;
@@ -79,6 +77,7 @@ namespace agora
                 videoRawDataManager = VideoRawDataManager.GetInstance(mRtcEngine);
                 packetObserver = PacketObserver.GetInstance(mRtcEngine);
                 metadataObserver = MetadataObserver.GetInstance(mRtcEngine);
+                streamViewManager = new StreamViewManager();
                 InitCallback();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
@@ -202,41 +201,6 @@ namespace agora
                 return IRtcEngine.GetSdkVersion();
             }
 
-            private const float Offset = 100;
-            private VideoSurface makeImageSurface(string goName)
-            {
-                
-                UnityEngine.GameObject go = new UnityEngine.GameObject();
-
-                if (go == null)
-                {
-                    return null;
-                }
-
-                go.name = goName;
-
-                // to be renderered onto
-                go.AddComponent<RawImage>();
-
-                // make the object draggable
-                go.AddComponent<UIElementDragger>();
-                UnityEngine.GameObject canvas = UnityEngine.GameObject.Find("Canvas");
-                if (canvas != null)
-                {
-                    go.transform.parent = canvas.transform;
-                }
-                // set up transform
-                go.transform.Rotate(0f, 0.0f, 180.0f);
-                float xPos = UnityEngine.Random.Range(Offset - UnityEngine.Screen.width / 2f, UnityEngine.Screen.width / 2f - Offset);
-                float yPos = UnityEngine.Random.Range(Offset, UnityEngine.Screen.height / 2f - Offset);
-                go.transform.localPosition = new UnityEngine.Vector3(xPos, yPos, 0f);
-                go.transform.localScale = new UnityEngine.Vector3(3f, 4f, 1f);
-
-                // configure videoSurface
-                VideoSurface videoSurface = go.AddComponent<VideoSurface>();
-                return videoSurface;
-            }
-
             public ServerMessage getSdkVersion(ServerMessage message)
             {
                 string version = IRtcEngine.GetSdkVersion();
@@ -253,23 +217,10 @@ namespace agora
                 string optionalInfo = (string)(message.info["optionalInfo"]);
                 int optionalUid = (int)(message.info["optionalUid"]);
                 int ret = mRtcEngine.JoinChannelByKey(token, channelName, optionalInfo, (uint)optionalUid);
+                streamViewManager.AddLocalStreamView();
+                
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", ret);
-
-                UnityEngine.GameObject go = UnityEngine.GameObject.Find(localVideoSurfaceName);
-                if (go == null)
-                {
-                    VideoSurface videoSurface = makeImageSurface(localVideoSurfaceName);
-                    if (videoSurface != null)
-                    {
-                        //videoSurface.SetForUser((uint)optionalUid);
-                        videoSurface.SetEnable(true);
-                        videoSurface.SetVideoSurfaceType(AgoraVideoSurfaceType.RawImage);
-                        videoSurface.SetGameFps(30);
-                    }
-
-                }
-
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -300,12 +251,7 @@ namespace agora
 
             public ServerMessage leaveChannel(ServerMessage message)
             {
-                UnityEngine.GameObject go = UnityEngine.GameObject.Find(localVideoSurfaceName);
-                if (go != null)
-                {
-                    UnityEngine.Object.Destroy(go);
-                }
-
+                streamViewManager.RemoveLocalStreamView();
                 int ret = mRtcEngine.LeaveChannel();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", ret);
@@ -1888,15 +1834,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
                 UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onLeaveChannel", 0, infoData, null));
-                foreach (var uid in remoteUIdList)
-                {
-                    UnityEngine.GameObject go = UnityEngine.GameObject.Find(uid.ToString());
-                    if (go != null)
-                    {
-                        UnityEngine.Object.Destroy(go);
-                    }
-                }
-                remoteUIdList.Clear();
+                streamViewManager.RemoveAllRemoteStreamViews();
             }
 
             void OnReJoinChannelSuccessHandler(string channelName, uint uid, int elapsed)
@@ -1931,19 +1869,7 @@ namespace agora
 
             void OnUserJoinedHandler(uint uid, int elapsed)
             {
-                UnityEngine.GameObject go = UnityEngine.GameObject.Find(uid.ToString());
-                if (go == null)
-                {
-                    VideoSurface videoSurface = makeImageSurface(uid.ToString());
-                    if (videoSurface != null)
-                    {
-                        videoSurface.SetForUser (uid);
-                        videoSurface.SetEnable (true);
-                        videoSurface.SetVideoSurfaceType(AgoraVideoSurfaceType.RawImage);
-                        videoSurface.SetGameFps(30);
-                        remoteUIdList.Add(uid);
-                    }
-                }
+                streamViewManager.AddRemoteStreamView(uid);
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("uid", uid);
                 infoData.Add("elapsed", elapsed);
@@ -1952,17 +1878,11 @@ namespace agora
 
             void OnUserOfflineHandler(uint uid, USER_OFFLINE_REASON reason)
             {
-                UnityEngine.GameObject go = UnityEngine.GameObject.Find(uid.ToString());
-                if (go != null)
-                {
-                    UnityEngine.Object.Destroy(go);
-                    remoteUIdList.Remove(uid);
-                }
+                streamViewManager.RemoveRemoteStreamView(uid);
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("uid", uid);
                 infoData.Add("reasion", (int)reason);
                 UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onUserOffline", 0, infoData, null));
-
             }
 
             void OnVolumeIndicationHandler(AudioVolumeInfo[] speakers, int speakerNumber, int totalVolume)
