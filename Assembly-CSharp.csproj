@@ -64,6 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\AgoraGamingSDK\AgoraCallback.cs" />
+    <Compile Include="Assets\AgoraGamingSDK\AgoraChannel.cs" />
+    <Compile Include="Assets\AgoraGamingSDK\AgoraChannelCallback.cs" />
     <Compile Include="Assets\AgoraGamingSDK\AgoraEnums.cs" />
     <Compile Include="Assets\AgoraGamingSDK\AgoraGamingRtcEngine.cs" />
     <Compile Include="Assets\AgoraGamingSDK\AudioEffectManager.cs" />
@@ -75,6 +77,9 @@
     <Compile Include="Assets\AgoraGamingSDK\observer\PacketObserver.cs" />
     <Compile Include="Assets\AgoraGamingSDK\rawData\AudioRawDataManager.cs" />
     <Compile Include="Assets\AgoraGamingSDK\rawData\VideoRawDataManager.cs" />
+    <Compile Include="Assets\AgoraGamingSDK\tools\AgoraCallbackObject.cs" />
+    <Compile Include="Assets\AgoraGamingSDK\tools\AgoraCallbackQueue.cs" />
+    <Compile Include="Assets\AgoraGamingSDK\tools\AgoraLog.cs" />
     <Compile Include="Assets\AgoraGamingSDK\videoRender\VideoRender.cs" />
     <Compile Include="Assets\AgoraGamingSDK\videoRender\VideoSurface.cs" />
     <Compile Include="Assets\Best HTTP\BestHTTP\Authentication\Credentials.cs" />
