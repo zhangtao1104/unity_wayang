@@ -215,7 +215,7 @@ namespace agora
                 string token = (string)(message.info["token"]);
                 string channelName = (string)(message.info["channelName"]);
                 string optionalInfo = (string)(message.info["optionalInfo"]);
-                int optionalUid = (int)(message.info["optionalUid"]);
+                long optionalUid = JSON.ParseNumberToLong(message.info["optionalUid"]);
                 int ret = mRtcEngine.JoinChannelByKey(token, channelName, optionalInfo, (uint)optionalUid);
                 streamViewManager.AddLocalStreamView();
                 
@@ -235,10 +235,10 @@ namespace agora
                      
             public ServerMessage setRemoteVoicePosition(ServerMessage message)
             {
-                uint uid = (uint)(message.info["uid"]);
+                long uid = JSON.ParseNumberToLong(message.info["uid"]);
                 double pan = (double)(message.info["pan"]);
                 double gain = (double)(message.info["gain"]);
-                int ret = audioEffectManager.SetRemoteVoicePosition(uid, pan, gain);
+                int ret = audioEffectManager.SetRemoteVoicePosition((uint)uid, pan, gain);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
@@ -531,9 +531,9 @@ namespace agora
 
             public ServerMessage muteRemoteAudioStream(ServerMessage message)
             {
-                uint uid = (uint)message.info["uid"];
+                long uid = JSON.ParseNumberToLong(message.info["uid"]);
                 bool muted = (bool)message.info["muted"];
-                int ret = mRtcEngine.MuteRemoteAudioStream(uid, muted);
+                int ret = mRtcEngine.MuteRemoteAudioStream((uint)uid, muted);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
@@ -577,9 +577,9 @@ namespace agora
 
             public ServerMessage muteRemoteVideoStream(ServerMessage message)
             {
-                uint uid = (uint)message.info["uid"];
+                long uid = JSON.ParseNumberToLong(message.info["uid"]);
                 bool muted = (bool)message.info["muted"];
-                int ret = mRtcEngine.MuteRemoteVideoStream(uid, muted);
+                int ret = mRtcEngine.MuteRemoteVideoStream((uint)uid, muted);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
@@ -727,9 +727,9 @@ namespace agora
 
             public ServerMessage setRemoteVideoStreamType(ServerMessage message)
             {
-                uint uid = (uint)message.info["uid"];
+                long uid = JSON.ParseNumberToLong(message.info["uid"]);
                 int streamType = (int)message.info["streamType"];
-                int ret = mRtcEngine.SetRemoteVideoStreamType(uid, (REMOTE_VIDEO_STREAM_TYPE)streamType);
+                int ret = mRtcEngine.SetRemoteVideoStreamType((uint)uid, (REMOTE_VIDEO_STREAM_TYPE)streamType);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
@@ -1540,17 +1540,17 @@ namespace agora
             }      
             public ServerMessage setRemoteUserPriority(ServerMessage message)
             {
-                uint uid = (uint)message.info["uid"];
+                long uid = JSON.ParseNumberToLong(message.info["uid"]);
                 int priorityType = (int)message.info["priorityType"];
-                int ret = mRtcEngine.SetRemoteUserPriority(uid, (PRIORITY_TYPE)priorityType);
+                int ret = mRtcEngine.SetRemoteUserPriority((uint)uid, (PRIORITY_TYPE)priorityType);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }      
             public ServerMessage setLogFileSize(ServerMessage message)
             {
-                uint size = (uint)message.info["size"];
-                int ret = mRtcEngine.SetLogFileSize(size);
+                long size = JSON.ParseNumberToLong(message.info["size"]);
+                int ret = mRtcEngine.SetLogFileSize((uint)size);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);

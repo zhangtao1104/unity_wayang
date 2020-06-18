@@ -25,6 +25,21 @@ namespace agora
             {
                 return JsonMapper.ToJson(stringMessage);
             }
+
+            public static long ParseNumberToLong(JsonData data)
+            {
+                long value = 0;
+                if (data.IsInt)
+                {
+                    var v = (int)data;
+                    value = (long)v;
+                }
+                else if (data.IsLong)
+                {
+                    value = (long)data;
+                }
+                return value;
+            }
         }
     }
 }
