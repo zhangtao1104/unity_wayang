@@ -97,7 +97,7 @@ namespace agora
 
             private void InitOnBtnClickListener()
             {
-                Application.Logger.Info("MainView ", "InitOnBtnClickListener");
+                //Application.Logger.Info("MainView ", "InitOnBtnClickListener");
                 ConnectionStatusBtn.onClick.AddListener(OnConnectionStatusButtonClick);
                 ConfirmButton.onClick.AddListener(OnConfirmButtonClick);
                 //sendMessage.onClick.AddListener(OnSendMessageClick);
@@ -105,7 +105,7 @@ namespace agora
 
             void OnConnectionStatusButtonClick()
             {
-                Application.Logger.Info("MainView ", "OnConnectionStatusButtonClick");
+                //Application.Logger.Info("MainView ", "OnConnectionStatusButtonClick");
                 UpdateSettingCanvasUI();
                 SetVisibleCanvas(false);
             }

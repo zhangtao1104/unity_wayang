@@ -22,7 +22,8 @@ namespace agora
             private VideoRawDataManager videoRawDataManager = null;
             private PacketObserver packetObserver = null;
             private MetadataObserver metadataObserver = null;
-            private StreamViewManager streamViewManager = null;             
+            private StreamViewManager streamViewManager = null;
+            private AgoraChannelControl agoraChannelControl = new AgoraChannelControl();
             private RtcEnginePresenter rtcEnginePresenter {
                 get;
                 set;
@@ -54,7 +55,6 @@ namespace agora
                 }
                 catch (Exception e)
                 {
-                    Application.Logger.Info(TAG, "OnExecuteServerMessage message : " + message.ToString());
                     Application.Logger.Error(TAG, "OnExecuteServerMessage catch exception " + e);
                 }
             }
@@ -69,6 +69,7 @@ namespace agora
             {
                 string appId = (string)(message.info["appId"]);
                 mRtcEngine = IRtcEngine.GetEngine(appId);
+                agoraChannelControl.SetRtcEngine(mRtcEngine);
                 audioEffectManager = AudioEffectManagerImpl.GetInstance(mRtcEngine);
                 videoDeviceManager = VideoDeviceManager.GetInstance(mRtcEngine);
                 audioRecordingDeviceManager = AudioRecordingDeviceManager.GetInstance(mRtcEngine);
@@ -925,9 +926,21 @@ namespace agora
 
             public ServerMessage setVideoEncoderConfiguration(ServerMessage message)
             {
+                // "minFrameRate": -1, "degradationPreference": 0 } } }
+
+
                 string s = message.ToString();
                 Application.Logger.Info(TAG, "setVideoEncoderConfiguration  called message.info = " + message.info.ToJson());
-                VideoEncoderConfiguration videoEncoderConfiguration = JSON.JsonToObject<VideoEncoderConfiguration>(message.info.ToJson());
+                VideoEncoderConfiguration videoEncoderConfiguration = new VideoEncoderConfiguration();
+                videoEncoderConfiguration.dimensions.width = (int)message.info["config"]["dimensionWidth"];
+                videoEncoderConfiguration.dimensions.height = (int)message.info["config"]["dimensionHeight"];
+                videoEncoderConfiguration.frameRate = (FRAME_RATE)(int)message.info["config"]["frameRate"];
+                videoEncoderConfiguration.bitrate = (int)message.info["config"]["bitrate"];
+                videoEncoderConfiguration.minBitrate = (int)message.info["config"]["minBitrate"];
+                videoEncoderConfiguration.orientationMode = (ORIENTATION_MODE)(int)message.info["config"]["orientationMode"];
+                videoEncoderConfiguration.minFrameRate = (int)message.info["config"]["minFrameRate"];
+                videoEncoderConfiguration.degradationPreference = (DEGRADATION_PREFERENCE)(int)message.info["config"]["degradationPreference"];
+
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 int ret = mRtcEngine.SetVideoEncoderConfiguration(videoEncoderConfiguration);
                 infoData.Add("error", ret);
@@ -1509,12 +1522,13 @@ namespace agora
             }    
             public ServerMessage setLocalVoiceEqualization(ServerMessage message)
             {
-                int bandFrequency = (int)message.info["band_frequency"];
-                int bandGain = (int)message.info["band_gain"];
+                int bandFrequency = (int)message.info["bandFrequency"];
+                int bandGain = (int)message.info["bandGain"];
                 int ret = mRtcEngine.SetLocalVoiceEqualization((AUDIO_EQUALIZATION_BAND_FREQUENCY) bandFrequency, bandGain);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
+
             }
             public ServerMessage setLocalVoiceReverb(ServerMessage message)
             {
@@ -1826,14 +1840,14 @@ namespace agora
                 infoData.Add("channel", channelName);
                 infoData.Add("uid", uid);
                 infoData.Add("elapsed", elapsed);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onJoinChannelSuccess", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onJoinChannelSuccess", 0, infoData, null));
             }
         
             void OnLeaveChannelHandler(RtcStats stats)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onLeaveChannel", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onLeaveChannel", 0, infoData, null));
                 streamViewManager.RemoveAllRemoteStreamViews();
             }
 
@@ -1843,28 +1857,28 @@ namespace agora
                 infoData.Add("channel", channelName);
                 infoData.Add("uid", uid);
                 infoData.Add("elapsed", elapsed);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onReJoinChannelSuccess", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onReJoinChannelSuccess", 0, infoData, null));
             }
 
             void OnConnectionLostHandler()
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onConnectionLost", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onConnectionLost", 0, infoData, null));
             }
 
             void OnConnectionInterruptedHandler()
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onConnectionInterrupted", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onConnectionInterrupted", 0, infoData, null));
             }
 
             void OnRequestTokenHandler()
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onRequestToken", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRequestToken", 0, infoData, null));
             }
 
             void OnUserJoinedHandler(uint uid, int elapsed)
@@ -1873,7 +1887,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("uid", uid);
                 infoData.Add("elapsed", elapsed);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onUserJoined", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onUserJoined", 0, infoData, null));
             }
 
             void OnUserOfflineHandler(uint uid, USER_OFFLINE_REASON reason)
@@ -1882,7 +1896,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("uid", uid);
                 infoData.Add("reasion", (int)reason);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onUserOffline", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onUserOffline", 0, infoData, null));
             }
 
             void OnVolumeIndicationHandler(AudioVolumeInfo[] speakers, int speakerNumber, int totalVolume)
@@ -1891,7 +1905,7 @@ namespace agora
                 infoData.Add("speakers", speakers);
                 infoData.Add("speakerNumber", speakerNumber);
                 infoData.Add("totalVolume", totalVolume);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onVolumeIndication", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onVolumeIndication", 0, infoData, null));
 
             }
 
@@ -1900,7 +1914,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("uid", uid);
                 infoData.Add("muted", muted);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onUserMutedAudio", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onUserMutedAudio", 0, infoData, null));
             }
 
             void OnSDKWarningHandler(int warn, string msg)
@@ -1908,7 +1922,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("warn", warn);
                 infoData.Add("msg", msg);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onSDKWarning", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onSDKWarning", 0, infoData, null));
             }
 
             void OnSDKErrorHandler(int error, string msg)
@@ -1924,14 +1938,14 @@ namespace agora
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onRtcStats", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRtcStats", 0, infoData, null));
             }
 
             void OnAudioMixingFinishedHandler()
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onAudioMixingFinished", 0, infoData, null));                
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onAudioMixingFinished", 0, infoData, null));                
             }
 
 
@@ -1939,7 +1953,7 @@ namespace agora
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("route", (int)route);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onAudioRouteChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onAudioRouteChanged", 0, infoData, null));
             }
 
             void OnFirstRemoteVideoDecodedHandler(uint uid, int width, int height, int elapsed)
@@ -1949,7 +1963,7 @@ namespace agora
                 infoData.Add("width", width);
                 infoData.Add("height", height);
                 infoData.Add("elapsed", elapsed);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onFirstRemoteVideoDecoded", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onFirstRemoteVideoDecoded", 0, infoData, null));
             }
 
             void OnVideoSizeChangedHandler(uint uid, int width, int height, int rotation)
@@ -1959,7 +1973,7 @@ namespace agora
                 infoData.Add("width", width);
                 infoData.Add("height", height);
                 infoData.Add("rotation", rotation);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onVideoSizeChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onVideoSizeChanged", 0, infoData, null));
             }
 
             void OnClientRoleChangedHandler(CLIENT_ROLE_TYPE oldRole, CLIENT_ROLE_TYPE newRole)
@@ -1967,7 +1981,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("oldRole", (int)oldRole);
                 infoData.Add("width", (int)newRole);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onClientRoleChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onClientRoleChanged", 0, infoData, null));
             }
 
             void OnUserMuteVideoHandler(uint uid, bool muted)
@@ -1975,14 +1989,14 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("uid", uid);
                 infoData.Add("muted", muted);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onUserMutedVideo", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onUserMutedVideo", 0, infoData, null));
             }
         
             void OnMicrophoneEnabledHandler(bool isEnabled)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("isEnabled", isEnabled);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onMicrophoneEnabled", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onMicrophoneEnabled", 0, infoData, null));
             }
 
             void OnApiExecutedHandler(int err, string api, string result)
@@ -1991,21 +2005,21 @@ namespace agora
                 infoData.Add("error", err);
                 infoData.Add("api", api);
                 infoData.Add("result", result);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onApiExecuted", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onApiExecuted", 0, infoData, null));
             }
 
             void OnLastmileQualityHandler(int quality)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("quality", quality);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onLastmileQuality", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onLastmileQuality", 0, infoData, null));
             }
 
             void OnFirstLocalAudioFrameHandler(int elapsed)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("elapsed", elapsed);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onFirstLocalAudioFrame", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onFirstLocalAudioFrame", 0, infoData, null));
             }
 
             void OnFirstRemoteAudioFrameHandler(uint userId, int elapsed)
@@ -2013,7 +2027,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("userId", userId);
                 infoData.Add("elapsed", elapsed);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onFirstRemoteAudioFrame", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onFirstRemoteAudioFrame", 0, infoData, null));
             }
 
             void OnAudioQualityHandler(uint userId, int quality, ushort delay, ushort lost)
@@ -2023,7 +2037,7 @@ namespace agora
                 infoData.Add("quality", quality);
                 infoData.Add("delay", delay);
                 infoData.Add("lost", lost);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onAudioQuality", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onAudioQuality", 0, infoData, null));
             }
         
             void OnStreamInjectedStatusHandler(string url, uint userId, int status)
@@ -2032,14 +2046,14 @@ namespace agora
                 infoData.Add("url", url);
                 infoData.Add("userId", userId);
                 infoData.Add("status", status);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onStreamInjectStatus", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onStreamInjectStatus", 0, infoData, null));
             }
 
             void OnStreamUnpublishedHandler(string url)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("url", url);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onStreamUnpublished", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onStreamUnpublished", 0, infoData, null));
             }
 
             void OnStreamPublishedHandler(string url, int error)
@@ -2047,7 +2061,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("url", url);
                 infoData.Add("error", error);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onStreamPublished", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onStreamPublished", 0, infoData, null));
             }
 
             void OnStreamMessageErrorHandler(uint userId, int streamId, int code, int missed, int cached)
@@ -2058,7 +2072,7 @@ namespace agora
                 infoData.Add("code", code);
                 infoData.Add("missed", missed);
                 infoData.Add("cached", cached);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onStreamMessageError", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onStreamMessageError", 0, infoData, null));
             }
 
             void OnStreamMessageHandler(uint userId, int streamId, string data, int length)
@@ -2068,14 +2082,14 @@ namespace agora
                 infoData.Add("streamId", streamId);
                 infoData.Add("data", data);
                 infoData.Add("length", length);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onStreamMessage", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onStreamMessage", 0, infoData, null));
             }
 
             void OnConnectionBannedHandler()
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onConnectionBanned", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onConnectionBanned", 0, infoData, null));
             }
 
             void OnConnectionStateChangedHandler(CONNECTION_STATE_TYPE state, CONNECTION_CHANGED_REASON_TYPE reason)
@@ -2083,28 +2097,28 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("state", (int)state);
                 infoData.Add("reason", (int)reason);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onConnectionStateChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onConnectionStateChanged", 0, infoData, null));
             }
 
             void OnTokenPrivilegeWillExpireHandler(string token)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("token", token);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onTokenPrivilegewillExpire", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onTokenPrivilegewillExpire", 0, infoData, null));
             }
 
             void OnActiveSpeakerHandler(uint uid)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("uid", uid);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onActiveSpeaker", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onActiveSpeaker", 0, infoData, null));
             }
 
             void OnVideoStoppedHandler()
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onVideoStopped", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onVideoStopped", 0, infoData, null));
             }
 
             void OnFirstLocalVideoFrameHandler(int width, int height, int elapsed)
@@ -2113,7 +2127,7 @@ namespace agora
                 infoData.Add("width", width);
                 infoData.Add("height", height);
                 infoData.Add("elapsed", elapsed);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onFirstLocalVideoFrame", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onFirstLocalVideoFrame", 0, infoData, null));
             }
 
             void OnFirstRemoteVideoFrameHandler(uint uid, int width, int height, int elapsed)
@@ -2123,7 +2137,7 @@ namespace agora
                 infoData.Add("width", width);
                 infoData.Add("height", height);
                 infoData.Add("elapsed", elapsed);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onFirstRemoteVideoFrame", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onFirstRemoteVideoFrame", 0, infoData, null));
             }
 
             void OnUserEnableVideoHandler(uint uid, bool enabled)
@@ -2131,7 +2145,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("uid", uid);
                 infoData.Add("enabled", enabled);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onUserEnableVideo", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onUserEnableVideo", 0, infoData, null));
             }
 
             void OnUserEnableLocalVideoHandler(uint uid, bool enabled)
@@ -2139,7 +2153,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("uid", uid);
                 infoData.Add("enabled", enabled);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onUserEnableLocalVideo", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onUserEnableLocalVideo", 0, infoData, null));
             }
 
             void OnRemoteVideoStateChangedHandler(uint uid, REMOTE_VIDEO_STATE state, REMOTE_VIDEO_STATE_REASON reason, int elapsed)
@@ -2149,14 +2163,14 @@ namespace agora
                 infoData.Add("state", (int)state);
                 infoData.Add("reason", (int)reason);
                 infoData.Add("elapsed", elapsed);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onRemoteVideoStateChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRemoteVideoStateChanged", 0, infoData, null));
             }
 
             void OnLocalPublishFallbackToAudioOnlyHandler(bool isFallbackOrRecover)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("isFallbackOrRecover", isFallbackOrRecover);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "OnLocalPublishFallbackToAudioOnly", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "OnLocalPublishFallbackToAudioOnly", 0, infoData, null));
             }
 
             void OnRemoteSubscribeFallbackToAudioOnlyHandler(uint uid, bool isFallbackOrRecover)
@@ -2164,7 +2178,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("uid", uid);
                 infoData.Add("isFallbackOrRecover", isFallbackOrRecover);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onRemoteSubscribeFallbackToAudioOnly", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRemoteSubscribeFallbackToAudioOnly", 0, infoData, null));
             }
 
             void OnNetworkQualityHandler(uint uid, int txQuality, int rxQuality)
@@ -2173,28 +2187,28 @@ namespace agora
                 infoData.Add("uid", uid);
                 infoData.Add("txQuality", txQuality);
                 infoData.Add("rxQuality", rxQuality);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onNetworkQuality", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onNetworkQuality", 0, infoData, null));
             }
 
             void OnLocalVideoStatsHandler(LocalVideoStats localVideoStats)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onLocalVideoStats", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onLocalVideoStats", 0, infoData, null));
             }
 
             void OnRemoteVideoStatsHandler(RemoteVideoStats remoteVideoStats)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onRemoteVideoStats", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRemoteVideoStats", 0, infoData, null));
             }
 
             void OnRemoteAudioStatsHandler(RemoteAudioStats remoteAudioStats)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onRemoteAudioStats", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRemoteAudioStats", 0, infoData, null));
             }
 
             void OnAudioDeviceStateChangedHandler(string deviceId, int deviceType, int deviceState)
@@ -2203,14 +2217,14 @@ namespace agora
                 infoData.Add("deviceId", deviceId);
                 infoData.Add("deviceType", deviceType);
                 infoData.Add("deviceState", deviceState);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onAudioDeviceStateChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onAudioDeviceStateChanged", 0, infoData, null));
             }
     
             void OnCameraReadyHandler()
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onCameraReady", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onCameraReady", 0, infoData, null));
             }
 
             void OnCameraFocusAreaChangedHandler(int x, int y, int width, int height)
@@ -2220,7 +2234,7 @@ namespace agora
                 infoData.Add("y", y);
                 infoData.Add("width", width);
                 infoData.Add("height", height);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onCameraFocusAreaChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onCameraFocusAreaChanged", 0, infoData, null));
             }
 
             void OnCameraExposureAreaChangedHandler(int x, int y, int width, int height)
@@ -2230,28 +2244,28 @@ namespace agora
                 infoData.Add("y", y);
                 infoData.Add("width", width);
                 infoData.Add("height", height);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onCameraExposureAreaChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onCameraExposureAreaChanged", 0, infoData, null));
             }
 
             void OnRemoteAudioMixingBeginHandler()
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onRemoteAudioMixingBegin", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRemoteAudioMixingBegin", 0, infoData, null));
             }
 
             void OnRemoteAudioMixingEndHandler()
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onRemoteAudioMixingEnd", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRemoteAudioMixingEnd", 0, infoData, null));
             }
 
             void OnAudioEffectFinishedHandler(int soundId)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("soundId", soundId);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onAudioEffectFinished", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onAudioEffectFinished", 0, infoData, null));
             }
 
             void OnVideoDeviceStateChangedHandler(string deviceId, int deviceType, int deviceState)
@@ -2260,7 +2274,7 @@ namespace agora
                 infoData.Add("deviceId", deviceId);
                 infoData.Add("deviceType", deviceType);
                 infoData.Add("deviceState", deviceState);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onVideoDeviceStateChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onVideoDeviceStateChanged", 0, infoData, null));
             }
 
             void OnRemoteVideoTransportStatsHandler(uint uid, ushort delay, ushort lost, ushort rxKBitRate)
@@ -2270,7 +2284,7 @@ namespace agora
                 infoData.Add("delay", (int)delay);
                 infoData.Add("lost", (int)lost);
                 infoData.Add("rxkBitRate", (int)rxKBitRate);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onRemoteVideoTransportStats", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRemoteVideoTransportStats", 0, infoData, null));
             }
     
             void OnRemoteAudioTransportStatsHandler(uint uid, ushort delay, ushort lost, ushort rxKBitRate)
@@ -2280,14 +2294,14 @@ namespace agora
                 infoData.Add("delay", (int)delay);
                 infoData.Add("lost", (int)lost);
                 infoData.Add("rxKBitRate", (int)rxKBitRate);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onRemoteAudioTransportStats", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRemoteAudioTransportStats", 0, infoData, null));
             }
 
             void OnTranscodingUpdatedHandler()
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onTranscodingUpdated", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onTranscodingUpdated", 0, infoData, null));
             }
 
             void OnAudioDeviceVolumeChangedHandler(MEDIA_DEVICE_TYPE deviceType, int volume, bool muted)
@@ -2296,21 +2310,21 @@ namespace agora
                 infoData.Add("deviceType", deviceType);
                 infoData.Add("volume", volume);
                 infoData.Add("muted", muted);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onAudioDeviceVolumeChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onAudioDeviceVolumeChanged", 0, infoData, null));
             }
 
             void OnMediaEngineStartCallSuccessHandler()
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onMediaEngineStartCallSuccess", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onMediaEngineStartCallSuccess", 0, infoData, null));
             }
 
             void OnMediaEngineLoadSuccessHandler()
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onMediaEngineLoadSuccess", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onMediaEngineLoadSuccess", 0, infoData, null));
             }
 
             void OnAudioMixingStateChangedHandler(AUDIO_MIXING_STATE_TYPE state, AUDIO_MIXING_ERROR_TYPE errorCode)
@@ -2318,7 +2332,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("state", (int)state);
                 infoData.Add("errorCode", (int)errorCode);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onAudioMixingStateChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onAudioMixingStateChanged", 0, infoData, null));
             }
 
             void OnFirstRemoteAudioDecodedHandler(uint uid, int elapsed)
@@ -2326,7 +2340,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("uid", uid);
                 infoData.Add("elapsed", elapsed);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onFirstRemoteAudioDecoded", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onFirstRemoteAudioDecoded", 0, infoData, null));
             }
 
             void OnLocalVideoStateChangedHandler(LOCAL_VIDEO_STREAM_STATE localVideoState, LOCAL_VIDEO_STREAM_ERROR error)
@@ -2334,7 +2348,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("localVideoState", localVideoState);
                 infoData.Add("error", error);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onLocalVideoStateChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onLocalVideoStateChanged", 0, infoData, null));
             }
 
             void OnRtmpStreamingStateChangedHandler(string url, RTMP_STREAM_PUBLISH_STATE state, RTMP_STREAM_PUBLISH_ERROR errCode)
@@ -2343,21 +2357,21 @@ namespace agora
                 infoData.Add("url", url);
                 infoData.Add("state", (int)state);
                 infoData.Add("errCode", (int)errCode);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onRtmpStreamingStateChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRtmpStreamingStateChanged", 0, infoData, null));
             }
 
             void OnNetworkTypeChangedHandler(NETWORK_TYPE type)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("type", (int)type);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onNetworkTypeChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onNetworkTypeChanged", 0, infoData, null));
             }
             
             void OnLastmileProbeResultHandler(LastmileProbeResult result)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onLastmileProbeResult", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onLastmileProbeResult", 0, infoData, null));
             }
 
             void OnLocalUserRegisteredHandler(uint uid, string userAccount)
@@ -2365,7 +2379,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("uid", uid);
                 infoData.Add("userAccount", userAccount);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onLocalUserRegistered", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onLocalUserRegistered", 0, infoData, null));
             }
 
             void OnUserInfoUpdatedHandler(uint uid, UserInfo userInfo)
@@ -2374,7 +2388,7 @@ namespace agora
                 infoData.Add("uid", uid);
                 infoData.Add("user_uid", userInfo.uid);
                 infoData.Add("user_account", userInfo.userAccount);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onUserInfoUpdated", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onUserInfoUpdated", 0, infoData, null));
             }
     
             void OnLocalAudioStateChangedHandler(LOCAL_AUDIO_STREAM_STATE state, LOCAL_AUDIO_STREAM_ERROR error)
@@ -2382,7 +2396,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("state", (int)state);
                 infoData.Add("error", (int)error);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onLocalAudioStateChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onLocalAudioStateChanged", 0, infoData, null));
             }
 
             void OnRemoteAudioStateChangedHandler(uint uid, REMOTE_AUDIO_STATE state, REMOTE_AUDIO_STATE_REASON reason, int elapsed)
@@ -2391,14 +2405,14 @@ namespace agora
                 infoData.Add("uid", uid);
                 infoData.Add("reason", reason);
                 infoData.Add("elapsed", elapsed);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onRemoteAudioStateChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRemoteAudioStateChanged", 0, infoData, null));
             }
             
             void OnLocalAudioStatsHandler(LocalAudioStats localAudioStats)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onLocalVideoStateChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onLocalVideoStateChanged", 0, infoData, null));
             }
 
             void OnChannelMediaRelayStateChangedHandler(CHANNEL_MEDIA_RELAY_STATE state, CHANNEL_MEDIA_RELAY_ERROR code)
@@ -2406,44 +2420,44 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("state", (int)state);
                 infoData.Add("code", (int)code);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onChannelMediaRelayStateChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onChannelMediaRelayStateChanged", 0, infoData, null));
             }
 
             void OnChannelMediaRelayEventHandler(CHANNEL_MEDIA_RELAY_EVENT events)
             {
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("events", (int)events);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, Application.DeviceID, "onChannelMediaRelayEvent", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onChannelMediaRelayEvent", 0, infoData, null));
             }
 
             void OnRecordAudioFrameHandler(AudioFrame audioFrame)
             {
-                Application.Logger.Info(TAG, "OnRecordAudioFrameHandler");
+                //Application.Logger.Info(TAG, "OnRecordAudioFrameHandler");
             }
 
             void OnPlaybackAudioFrameHandler(AudioFrame audioFrame)
             {
-                Application.Logger.Info(TAG, "OnPlaybackAudioFrameHandler");
+                //Application.Logger.Info(TAG, "OnPlaybackAudioFrameHandler");
             }
 
             void OnMixedAudioFrameHandler(AudioFrame audioFrame)
             {
-                Application.Logger.Info(TAG, "OnMixedAudioFrameHandler");
+                //Application.Logger.Info(TAG, "OnMixedAudioFrameHandler");
             }
 
             void OnPlaybackAudioFrameBeforeMixingHandler(uint uid, AudioFrame audioFrame)
             {
-                Application.Logger.Info(TAG, "OnPlaybackAudioFrameBeforeMixingHandler");
+                //Application.Logger.Info(TAG, "OnPlaybackAudioFrameBeforeMixingHandler");
             }
 
             void OnCaptureVideoFrameHandler(VideoFrame videoFrame)
             {
-                Application.Logger.Info(TAG, "OnCaptureVideoFrameHandler");
+                //Application.Logger.Info(TAG, "OnCaptureVideoFrameHandler");
             }
        
             void OnRenderVideoFrameHandler(uint uid, VideoFrame videoFrame)
             {
-                Application.Logger.Info(TAG, "OnRenderVideoFrameHandler");
+                //Application.Logger.Info(TAG, "OnRenderVideoFrameHandler");
             }
         }
     }

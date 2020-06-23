@@ -18,24 +18,25 @@ namespace agora
 
             public void SendJsonToMessageQueue(MessageType type, string json)
             {
-                Application.Logger.Info(TAG, "JsonFromServer json = " + json);
+                
                 ServerMessage message = JSON.JsonToObject<ServerMessage>(json);
                 if (message.type == (int)TYPE.CMD_MESSAGE && message.device == Application.DeviceID)
                 {
-                    Application.Logger.Info(TAG, "JsonFromServer send message type is " + (int)message.type);
+                    //Application.Logger.Info(TAG, "JsonFromServer send message type is " + (int)message.type);
+                    Application.Logger.Info(TAG, "JsonFromServer json = " + json);
                     SendMessageToQueue(MessageType.SERVER, message);
                 }
                 else if (message.type != (int)TYPE.CMD_MESSAGE)
                 {
-                    Application.Logger.Info(TAG, "JsonFromServer  abandon message  type is " + (int)message.type);
+                    //Application.Logger.Info(TAG, "JsonFromServer  abandon message  type is " + (int)message.type);
                 }
                 else if (message.device != Application.DeviceID)
                 {
-                    Application.Logger.Info(TAG, "JsonFromServer abandon message my deviceId is : " + Application.DeviceID + "  , receive message deviceId is :" + message.device);
+                    //Application.Logger.Info(TAG, "JsonFromServer abandon message my deviceId is : " + Application.DeviceID + "  , receive message deviceId is :" + message.device);
                 }
                 else
                 {
-                    Application.Logger.Info(TAG, "JsonFromServer  abandon message  type is json: " + json);
+                    //Application.Logger.Info(TAG, "JsonFromServer  abandon message  type is json: " + json);
                 }
             }
 
@@ -50,7 +51,7 @@ namespace agora
                     case MessageType.SERVER:
                         lock(messageFromServerQueue)
                         {
-                            Application.Logger.Info(TAG, " SendMessageToQueue type = " + (int)type + "  message cmd = " + message.cmd);
+                            //Application.Logger.Info(TAG, " SendMessageToQueue type = " + (int)type + "  message cmd = " + message.cmd);
                             if (messageFromServerQueue.Count >= 100)
                             {
                                 messageFromServerQueue.Dequeue();
@@ -62,7 +63,7 @@ namespace agora
                     case MessageType.CLIENT:
                         lock(messageToServerQueue)
                         {
-                            Application.Logger.Info(TAG, " SendMessageToQueue type = " + (int)type + "  message cmd = " + message.cmd);
+                            //Application.Logger.Info(TAG, " SendMessageToQueue type = " + (int)type + "  message cmd = " + message.cmd);
                             if (messageToServerQueue.Count >= 100)
                             {
                                 messageToServerQueue.Dequeue();
@@ -86,7 +87,7 @@ namespace agora
                             if (messageFromServerQueue.Count > 0)
                             {
                                 message = messageFromServerQueue.Dequeue();
-                                Application.Logger.Info(TAG, " GetMessageFromQueue type = " + (int)type + "  message cmd = " + message.cmd);
+                                //Application.Logger.Info(TAG, " GetMessageFromQueue type = " + (int)type + "  message cmd = " + message.cmd);
                             }
                         }
                         break;
@@ -97,7 +98,7 @@ namespace agora
                             if (messageToServerQueue.Count > 0)
                             {
                                 message = messageToServerQueue.Dequeue();
-                                Application.Logger.Info(TAG, " GetMessageFromQueue type = " + (int)type + "  message cmd = " + message.cmd);
+                                //Application.Logger.Info(TAG, " GetMessageFromQueue type = " + (int)type + "  message cmd = " + message.cmd);
                             }
                         }
                         break;

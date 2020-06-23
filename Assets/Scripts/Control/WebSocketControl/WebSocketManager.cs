@@ -163,7 +163,7 @@ namespace agora
                 }
 
                 webSocket.Send(frame);
-                Application.Logger.Info(Tag, "Send message frame ");
+                //Application.Logger.Info(Tag, "Send message frame ");
                 return (int)ERROR_CODE.ERROR_OK;
             }
 
@@ -176,7 +176,7 @@ namespace agora
                 }
 
                 webSocket.Send(buffer, offset, count);
-                Application.Logger.Info(Tag, "Send message byte  buffer = " + buffer + " ,offset = " + offset + " ,count = " + count);
+                //Application.Logger.Info(Tag, "Send message byte  buffer = " + buffer + " ,offset = " + offset + " ,count = " + count);
                 return (int)ERROR_CODE.ERROR_OK;       
             }
 
@@ -244,7 +244,7 @@ namespace agora
                     WebSocketPresenter.OnWebSocketReceiveMessage(webSocket, message);
                 }
 
-                Application.Logger.Info(Tag, "[receive] OnWebSocketReceiveMessage " + message);       
+                //Application.Logger.Info(Tag, "[receive] OnWebSocketReceiveMessage " + message);       
             }
             
             public void OnWebSocketReceiveBianry(WebSocket webSocket, byte[] data)
@@ -254,7 +254,7 @@ namespace agora
                     WebSocketPresenter.OnWebSocketReceiveBianry(webSocket, data);
                 }
 
-                Application.Logger.Info(Tag, "OnWebSocketReceiveBianry " + data);   
+                //Application.Logger.Info(Tag, "OnWebSocketReceiveBianry " + data);   
             }
 
             public void OnWebSocketErrorDescription(WebSocket webSocket, string reason)

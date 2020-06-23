@@ -12,7 +12,7 @@ namespace agora
             private static string TAG = "ServerMessageFactory";
             public static ServerMessage CreateServerMessage(TYPE type, string device, string cmd, System.Int64 sequence, Dictionary<string, object> info, Dictionary<string, object> extra) 
             {
-                Application.Logger.Info(TAG, System.Reflection.MethodBase.GetCurrentMethod().Name);
+                //Application.Logger.Info(TAG, System.Reflection.MethodBase.GetCurrentMethod().Name);
                 ServerMessage message = new ServerMessage();
                 message.type = (int)type;
                 message.device = device;

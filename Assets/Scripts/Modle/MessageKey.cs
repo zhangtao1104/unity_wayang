@@ -7,6 +7,7 @@ namespace agora
         public enum TYPE
         {
             CMD_MESSAGE = 1,
+            CALLBACK_MESSAGE = 4,
             UPLOAD_MESSAGE = 5
         }
 

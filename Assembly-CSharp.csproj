@@ -938,6 +938,7 @@
     <Compile Include="Assets\Scripts\Application.cs" />
     <Compile Include="Assets\Scripts\Constants\ErrorCode.cs" />
     <Compile Include="Assets\Scripts\Control\ApplicationContract.cs" />
+    <Compile Include="Assets\Scripts\Control\ChannelControl\AgoraChannelControl.cs" />
     <Compile Include="Assets\Scripts\Control\EngineControl\RtcEngineControl.cs" />
     <Compile Include="Assets\Scripts\Control\ReConnectControl.cs" />
     <Compile Include="Assets\Scripts\Control\ServerMessageControl\MessageComand.cs" />

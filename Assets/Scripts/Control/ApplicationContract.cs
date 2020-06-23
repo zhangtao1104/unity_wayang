@@ -153,7 +153,7 @@ namespace agora
 
             public void OnWebSocketConnect(WebSocket webSocket)
             {
-                Application.Logger.Info(TAG, System.Reflection.MethodBase.GetCurrentMethod().Name);
+                //Application.Logger.Info(TAG, System.Reflection.MethodBase.GetCurrentMethod().Name);
                 //string s = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"create\", \"info\":{\"context\":\"\",\"appId\":\"5db0d12c40354100abd7a8a0adaa1fb8\",\"handler\":\"\"},\"extra\":{}}";
                 //MessageComand.SendJsonToMessageQueue(MessageType.SERVER, s);
 
@@ -168,7 +168,7 @@ namespace agora
 
             public void OnWebSocketDisConnect(WebSocket webSocket, UInt16 code, string message)
             {
-                Application.Logger.Info(TAG, System.Reflection.MethodBase.GetCurrentMethod().Name);
+                //Application.Logger.Info(TAG, System.Reflection.MethodBase.GetCurrentMethod().Name);
                 MainViewPersenter.OnWebSocketDisConnect();
             }
 
