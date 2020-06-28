@@ -20,6 +20,8 @@
             string GetSDKVersion();
             void ResetWebSocket();
             void OnSendMessage();
+            void OnJoinChannel();
+            void OnLeaveChannel();
         }
     }
 }

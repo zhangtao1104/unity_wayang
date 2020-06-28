@@ -27,6 +27,14 @@ namespace agora
                         {
                             message.info[a.Key] = (int)a.Value;
                         }
+                        else if (a.Value is uint)
+                        {
+                            message.info[a.Key] = (uint)a.Value;
+                        }
+                        else if (a.Value is long)
+                        {
+                            message.info[a.Key] = (long)a.Value;
+                        }
                         else if (a.Value is string)
                         {
                             message.info[a.Key] = (string)a.Value;
@@ -39,10 +47,11 @@ namespace agora
                         {
                             message.info[a.Key] = (float)a.Value;
                         }
-                        else if (a.Value is uint)
+                        else if (a.Value is double)
                         {
-                            message.info[a.Key] = (uint)a.Value;
+                            message.info[a.Key] = (double)a.Value;
                         }
+                        
                     }
                 }
                 if (extra != null)
@@ -53,6 +62,14 @@ namespace agora
                         if (a.Value is int)
                         {
                             message.extra[a.Key] = (int)a.Value;
+                        }
+                        else if (a.Value is uint)
+                        {
+                            message.extra[a.Key] = (uint)a.Value;
+                        }
+                        else if (a.Value is long)
+                        {
+                            message.extra[a.Key] = (long)a.Value;
                         }
                         else if (a.Value is string)
                         {
@@ -65,6 +82,10 @@ namespace agora
                         else if (a.Value is float)
                         {
                             message.extra[a.Key] = (float)a.Value;
+                        }
+                        else if (a.Value is double)
+                        {
+                            message.extra[a.Key] = (double)a.Value;
                         }
                     }
                 }

@@ -961,6 +961,7 @@
     <Compile Include="Assets\Scripts\Presenter\WebSocketPresenter.cs" />
     <Compile Include="Assets\Scripts\Test.cs" />
     <Compile Include="Assets\Scripts\Tools\Tools.cs" />
+    <Compile Include="Assets\Scripts\View\ChannelStreamViewManager.cs" />
     <Compile Include="Assets\Scripts\View\MainView.cs" />
     <Compile Include="Assets\Scripts\View\StreamViewManager.cs" />
     <Compile Include="Assets\Scripts\View\UIElementDragger.cs" />

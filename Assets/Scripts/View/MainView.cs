@@ -19,7 +19,9 @@ namespace agora
             public Canvas MainCavas;
             public Button ConnectionStatusBtn;
             public Button ConfirmButton;
-            //public Button sendMessage;
+            public Button sendMessage;
+            public Button joinChannel;
+            public Button leaveChannel;
             private Image connectStatusImage;
             public Image settingCanvasConnectStatusImage;
             public InputField serverTextInputField;
@@ -100,7 +102,12 @@ namespace agora
                 //Application.Logger.Info("MainView ", "InitOnBtnClickListener");
                 ConnectionStatusBtn.onClick.AddListener(OnConnectionStatusButtonClick);
                 ConfirmButton.onClick.AddListener(OnConfirmButtonClick);
-                //sendMessage.onClick.AddListener(OnSendMessageClick);
+
+                sendMessage.onClick.AddListener(OnSendMessageClick);
+                joinChannel.onClick.AddListener(OnJoinChannelClick);
+                leaveChannel.onClick.AddListener(OnLeavelChannelClick);
+
+
             }
 
             void OnConnectionStatusButtonClick()
@@ -121,6 +128,16 @@ namespace agora
             void OnSendMessageClick()
             {
                 MainViewPersenter.OnSendMessage();
+            }
+
+            void OnJoinChannelClick()
+            {
+                MainViewPersenter.OnJoinChannel();
+            }
+
+            void OnLeavelChannelClick()
+            {
+                MainViewPersenter.OnLeaveChannel();
             }
 
             private void UpdateApplicationInfo()

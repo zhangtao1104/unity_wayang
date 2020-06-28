@@ -23,7 +23,7 @@ namespace agora
             private PacketObserver packetObserver = null;
             private MetadataObserver metadataObserver = null;
             private StreamViewManager streamViewManager = null;
-            private AgoraChannelControl agoraChannelControl = new AgoraChannelControl();
+            private AgoraChannelControl agoraChannelControl = null;
             private RtcEnginePresenter rtcEnginePresenter {
                 get;
                 set;
@@ -33,6 +33,11 @@ namespace agora
             {
                 get;
                 set;
+            }
+
+            public RtcEngineControl()
+            {
+                agoraChannelControl = new AgoraChannelControl(this);
             }
 
             public void SetRtcEnginePresenter(RtcEnginePresenter presenter)
@@ -47,10 +52,21 @@ namespace agora
                     if (message != null)
                     {
                         Application.Logger.Info(TAG, "OnExecuteServerMessage message : " + message.ToString());
-                        string methodName = message.cmd;
-                        MethodInfo method = this.GetType().GetMethod(methodName);
-                        Object info = method.Invoke(this, new Object[]{message});
-                        UploadMessageToServer((ServerMessage)info);
+                        var keys = message.info.Keys;
+                        if (keys.Contains("channelId"))
+                        {
+                            string methodName = message.cmd;
+                            MethodInfo method = agoraChannelControl.GetType().GetMethod(methodName);
+                            Object info = method.Invoke(agoraChannelControl, new Object[] { message });
+                            UploadMessageToServer((ServerMessage)info);
+                        }
+                        else
+                        {
+                            string methodName = message.cmd;
+                            MethodInfo method = this.GetType().GetMethod(methodName);
+                            Object info = method.Invoke(this, new Object[] { message });
+                            UploadMessageToServer((ServerMessage)info);
+                        }
                     }
                 }
                 catch (Exception e)
@@ -69,7 +85,12 @@ namespace agora
             {
                 string appId = (string)(message.info["appId"]);
                 mRtcEngine = IRtcEngine.GetEngine(appId);
-                agoraChannelControl.SetRtcEngine(mRtcEngine);
+
+                mRtcEngine.EnableAudio();
+                mRtcEngine.EnableVideo();
+                mRtcEngine.EnableVideoObserver();
+                mRtcEngine.SetMultiChannelWant(true);
+                
                 audioEffectManager = AudioEffectManagerImpl.GetInstance(mRtcEngine);
                 videoDeviceManager = VideoDeviceManager.GetInstance(mRtcEngine);
                 audioRecordingDeviceManager = AudioRecordingDeviceManager.GetInstance(mRtcEngine);
@@ -79,6 +100,7 @@ namespace agora
                 packetObserver = PacketObserver.GetInstance(mRtcEngine);
                 metadataObserver = MetadataObserver.GetInstance(mRtcEngine);
                 streamViewManager = new StreamViewManager();
+                agoraChannelControl.SetRtcEngine(mRtcEngine);
                 InitCallback();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
@@ -208,6 +230,15 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
                 infoData.Add("version", version);
+                return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
+            }
+
+            public ServerMessage setMultiChannelWant(ServerMessage message)
+            {
+                bool want = (bool)message.info["want"];
+                int ret = mRtcEngine.SetMultiChannelWant(want);
+                Dictionary<string, object> infoData = new Dictionary<string, object>();
+                infoData.Add("return", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -927,8 +958,6 @@ namespace agora
             public ServerMessage setVideoEncoderConfiguration(ServerMessage message)
             {
                 // "minFrameRate": -1, "degradationPreference": 0 } } }
-
-
                 string s = message.ToString();
                 Application.Logger.Info(TAG, "setVideoEncoderConfiguration  called message.info = " + message.info.ToJson());
                 VideoEncoderConfiguration videoEncoderConfiguration = new VideoEncoderConfiguration();

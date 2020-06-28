@@ -108,6 +108,15 @@ namespace agora
             {
                ApplicationContract.OnSendMessageClick(); 
             }
+
+            public void OnJoinChannel()
+            {
+                ApplicationContract.OnJoinChannelClicked();
+            }
+            public void OnLeaveChannel()
+            {
+                ApplicationContract.OnLeaveChannelClicked();
+            }
         }
     }
 }

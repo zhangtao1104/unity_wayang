@@ -210,7 +210,7 @@ namespace agora
 
             public void OnSendMessageClick()
             {
-                string s = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"create\", \"info\":{\"context\":\"\",\"appId\":\"5db0d12c40354100abd7a8a0adaa1fb8\",\"handler\":\"\"},\"extra\":{}}";
+                string s = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"create\", \"info\":{\"context\":\"\",\"appId\":\"fda6a89b2857451f8d3479a2fda2fbdf\",\"handler\":\"\"},\"extra\":{}}";
                 string s1 = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"setChannelProfile\", \"info\":{\"profile\":\"1\"},\"extra\":{}}";
                 string s2 = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"setClientRole\", \"info\":{\"role\":\"0\"},\"extra\":{}}";
                 string s3 = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"setParameters\", \"info\":{\"parameter\":\"{\"rtc.log_filter\": 65535}\"},\"extra\":{}}";
@@ -222,16 +222,29 @@ namespace agora
                 string s9 = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"leaveChannel\", \"info\":{\"enabled\":\"true\"},\"extra\":{}}";
                 string s10 = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"setRemoteVoicePosition\", \"info\":{\"enabled\":\"true\"},\"extra\":{}}";
                 Send(s);
+                //Send(s1);
+                //Send(s2);
+                //Send(s3);
+                //Send(s4);
+                //Send(s5);
+                //Send(s6);
+                //Send(s7);
+                //Send(s8);
+                //Send(s9);
+                //Send(s10);
+            }
+
+            public void OnJoinChannelClicked()
+            {
+                string s = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"createChannel\", \"info\":{\"channelId\":\"yifantt\"},\"extra\":{}}";
+                string s1 = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"joinChannel\", \"info\":{\"channelId\":\"yifantt\", \"token\":\"\",\"info\":\"1\",\"uid\":111111,\"autoSubscribeAudio\":true, \"autoSubscribeVideo\":true},\"extra\":{}}";
+                Send(s);
                 Send(s1);
-                Send(s2);
-                Send(s3);
-                Send(s4);
-                Send(s5);
-                Send(s6);
-                Send(s7);
-                Send(s8);
-                Send(s9);
-                Send(s10);
+            }
+            public void OnLeaveChannelClicked()
+            {
+                string s = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"leaveChannel\", \"info\":{\"channelId\":\"yifantt\"},\"extra\":{}}";
+                Send(s);
             }
         } 
     }
