@@ -103,9 +103,9 @@ namespace agora
                 ConnectionStatusBtn.onClick.AddListener(OnConnectionStatusButtonClick);
                 ConfirmButton.onClick.AddListener(OnConfirmButtonClick);
 
-                sendMessage.onClick.AddListener(OnSendMessageClick);
-                joinChannel.onClick.AddListener(OnJoinChannelClick);
-                leaveChannel.onClick.AddListener(OnLeavelChannelClick);
+                //sendMessage.onClick.AddListener(OnSendMessageClick);
+                //joinChannel.onClick.AddListener(OnJoinChannelClick);
+                //leaveChannel.onClick.AddListener(OnLeavelChannelClick);
 
 
             }
