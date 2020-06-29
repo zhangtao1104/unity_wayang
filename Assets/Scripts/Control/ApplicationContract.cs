@@ -80,7 +80,7 @@ namespace agora
                     ServerMessage clientMessage = MessageComand.GetMessageFromQueue(MessageType.CLIENT);
                     if (clientMessage != null)
                     {
-                        Application.Logger.Info(TAG, "Message: " + clientMessage.ToString());
+                        //Application.Logger.Info(TAG, "Message: " + clientMessage.ToString());
                         Send(System.Text.Encoding.UTF8.GetBytes(MessageComand.ServerMessageToJson(clientMessage)));
                     }
                 }
@@ -182,8 +182,8 @@ namespace agora
             }
 
             public void OnWebSocketReceiveMessage(WebSocket webSocket, string message)
-            {  
-                Application.Logger.Info(TAG, System.Reflection.MethodBase.GetCurrentMethod().Name + "  message = " + message);
+            {
+                //Application.Logger.Info(TAG, System.Reflection.MethodBase.GetCurrentMethod().Name + "  message = " + message);
                 MessageComand.SendJsonToMessageQueue(MessageType.SERVER, message);
             }
 
@@ -210,7 +210,7 @@ namespace agora
 
             public void OnSendMessageClick()
             {
-                string s = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"create\", \"info\":{\"context\":\"\",\"appId\":\"fda6a89b2857451f8d3479a2fda2fbdf\",\"handler\":\"\"},\"extra\":{}}";
+                string s = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"create\", \"info\":{\"context\":\"\",\"appId\":\"aab8b8f5a8cd4469a63042fcfafe7063\",\"handler\":\"\"},\"extra\":{}}";
                 string s1 = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"setChannelProfile\", \"info\":{\"profile\":\"1\"},\"extra\":{}}";
                 string s2 = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"setClientRole\", \"info\":{\"role\":\"0\"},\"extra\":{}}";
                 string s3 = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"setParameters\", \"info\":{\"parameter\":\"{\"rtc.log_filter\": 65535}\"},\"extra\":{}}";

@@ -51,9 +51,9 @@ namespace agora
                 {
                     if (message != null)
                     {
-                        Application.Logger.Info(TAG, "OnExecuteServerMessage message : " + message.ToString());
-                        var keys = message.info.Keys;
-                        if (keys.Contains("channelId"))
+                        //Application.Logger.Info(TAG, "OnExecuteServerMessage message : " + message.ToString());
+
+                        if (message.info != null && message.info.Keys.Contains("channelId"))
                         {
                             string methodName = message.cmd;
                             MethodInfo method = agoraChannelControl.GetType().GetMethod(methodName);
@@ -78,7 +78,7 @@ namespace agora
             public void UploadMessageToServer(ServerMessage message)
             {
                 rtcEnginePresenter.UploadMessageToServer(message);
-                Application.Logger.Info(TAG, "UploadMessageToServer message :" + message.ToString());
+                //Application.Logger.Info(TAG, "UploadMessageToServer message :" + message.ToString());
             }
 
             public ServerMessage create(ServerMessage message)
@@ -90,7 +90,7 @@ namespace agora
                 mRtcEngine.EnableVideo();
                 mRtcEngine.EnableVideoObserver();
                 mRtcEngine.SetMultiChannelWant(true);
-                
+
                 audioEffectManager = AudioEffectManagerImpl.GetInstance(mRtcEngine);
                 videoDeviceManager = VideoDeviceManager.GetInstance(mRtcEngine);
                 audioRecordingDeviceManager = AudioRecordingDeviceManager.GetInstance(mRtcEngine);
@@ -1963,10 +1963,36 @@ namespace agora
 
             }
 
-            void OnRtcStatsHandler(RtcStats stats)
+            void OnRtcStatsHandler(RtcStats rtcStats)
             {
-                Dictionary<string,object> infoData = new Dictionary<string, object>();
-                infoData.Add("error", 0);
+                Dictionary<string, object> infoData = new Dictionary<string, object>
+                {
+                    { "error", 0 },
+                    { "duration", rtcStats.duration },
+                    { "txBytes", rtcStats.txBytes },
+                    { "rxBytes", rtcStats.rxBytes },
+                    { "txAudioBytes", rtcStats.txAudioBytes },
+                    { "txVideoBytes", rtcStats.txVideoBytes },
+                    { "rxAudioBytes", rtcStats.rxAudioBytes },
+                    { "rxVideoBytes", rtcStats.rxVideoBytes },
+                    { "txKBitRate", rtcStats.txKBitRate },
+                    { "rxKBitRate", rtcStats.rxKBitRate },
+                    { "rxAudioKBitRate", rtcStats.rxAudioKBitRate },
+                    { "txAudioKBitRate", rtcStats.txAudioKBitRate },
+                    { "rxVideoKBitRate", rtcStats.rxVideoKBitRate },
+                    { "txVideoKBitRate", rtcStats.txVideoKBitRate },
+                    { "lastmileDelay", (int)rtcStats.lastmileDelay },
+                    { "txPacketLossRate", (int)rtcStats.txPacketLossRate },
+                    { "rxPacketLossRate", (int)rtcStats.rxPacketLossRate },
+                    { "userCount", rtcStats.userCount },
+                    { "cpuAppUsage", rtcStats.cpuAppUsage },
+                    { "cpuTotalUsage", rtcStats.cpuTotalUsage },
+                    { "gatewayRtt", rtcStats.gatewayRtt },
+                    { "memoryAppUsageRatio", rtcStats.memoryAppUsageRatio },
+                    { "memoryTotalUsageRatio", rtcStats.memoryTotalUsageRatio },
+                    { "memoryAppUsageInKbytes", rtcStats.memoryAppUsageInKbytes }
+
+                };
                 UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRtcStats", 0, infoData, null));
             }
 
