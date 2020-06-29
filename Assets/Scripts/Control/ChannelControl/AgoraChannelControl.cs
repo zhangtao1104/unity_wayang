@@ -45,7 +45,6 @@ namespace agora
                 channel.ChannelOnRemoteAudioStateChanged = OnChannelOnRemoteAudioStateChangedHandler;
                 channel.ChannelOnActiveSpeaker = OnChannelOnActiveSpeakerHandler;
                 channel.ChannelOnVideoSizeChanged = OnChannelOnVideoSizeChangedHandler;
-                channel.ChannelOnRemoteVideoSizeChanged = OnChannelOnRemoteVideoSizeChangedHandler;
                 channel.ChannelOnRemoteVideoStateChanged = OnChannelOnRemoteVideoStateChangedHandler;
                 channel.ChannelOnStreamMessage = OnChannelOnStreamMessageHandler;
                 channel.ChannelOnStreamMessageError = OnChannelOnStreamMessageErrorHandler;
@@ -103,7 +102,8 @@ namespace agora
                 bool autoSubscribeAudio = (bool)message.info["autoSubscribeAudio"];
                 bool autoSubscribeVideo = (bool)message.info["autoSubscribeVideo"];
 
-                int ret = channel.JoinChannel(token, info, (uint)uid, autoSubscribeAudio, autoSubscribeVideo);
+                ChannelMediaOptions options = new ChannelMediaOptions(autoSubscribeAudio, autoSubscribeVideo);
+                int ret = channel.JoinChannel(token, info, (uint)uid, options);
                 channelStreamViewManager.ChannelAddLocalStreamView();
 
                 Dictionary<string, object> infoData = new Dictionary<string, object>
@@ -123,7 +123,8 @@ namespace agora
                 bool autoSubscribeAudio = (bool)message.info["autoSubscribeAudio"];
                 bool autoSubscribeVideo = (bool)message.info["autoSubscribeVideo"];
 
-                int ret = channel.JoinChannelWithUserAccount(token, userAccount, autoSubscribeAudio, autoSubscribeVideo);
+                ChannelMediaOptions options = new ChannelMediaOptions(autoSubscribeAudio, autoSubscribeVideo);
+                int ret = channel.JoinChannelWithUserAccount(token, userAccount, options);
                 channelStreamViewManager.ChannelAddLocalStreamView();
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
@@ -246,7 +247,7 @@ namespace agora
                 AgoraChannel channel = channelDictionary[channelId];
 
                 int clientRole = (int)message.info["role"];
-                int ret = channel.SetClientRole((CLIENT_ROLE_TYPE)clientRole);
+                int ret = channel.SetClientRole((CLIENT_ROLE)clientRole);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
                     { "return", ret }
@@ -262,7 +263,7 @@ namespace agora
                 long uid = JSON.ParseNumberToLong(message.info["uid"]);
                 int userPriority = (int)message.info["userPriority"];
 
-                int ret = channel.SetRemoteUserPriority((uint)uid, userPriority);
+                int ret = channel.SetRemoteUserPriority((uint)uid, (PRIORITY_TYPE)userPriority);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
                     { "return", ret }
@@ -410,7 +411,7 @@ namespace agora
 
                 long userId = JSON.ParseNumberToLong(message.info["userId"]);
                 int streamType = (int)message.info["streamType"];
-                int ret = channel.SetRemoteVideoStreamType((uint)userId, streamType);
+                int ret = channel.SetRemoteVideoStreamType((uint)userId, (REMOTE_VIDEO_STREAM_TYPE)streamType);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
                     { "return", ret }
@@ -424,7 +425,7 @@ namespace agora
                 AgoraChannel channel = channelDictionary[channelId];
 
                 int streamType = (int)message.info["streamType"];
-                int ret = channel.SetRemoteDefaultVideoStreamType(streamType);
+                int ret = channel.SetRemoteDefaultVideoStreamType((REMOTE_VIDEO_STREAM_TYPE)streamType);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
                     { "return", ret }
@@ -581,7 +582,7 @@ namespace agora
                 string channelId = (string)message.info["channelId"];
                 AgoraChannel channel = channelDictionary[channelId];
 
-                int ret = channel.GetConnectionState();
+                int ret = (int)channel.GetConnectionState();
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
                     { "return", ret }
@@ -650,13 +651,13 @@ namespace agora
                 channelStreamViewManager.ChannelRemoveLocalStreamView();
             }
 
-            void OnChannelOnClientRoleChangedHandler(string channelId, int oldRole, int newRole)
+            void OnChannelOnClientRoleChangedHandler(string channelId, CLIENT_ROLE oldRole, CLIENT_ROLE newRole)
             {
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
                     { "channelId", channelId },
-                    { "oldRole", oldRole },
-                    { "newRole", newRole }
+                    { "oldRole", (int)oldRole },
+                    { "newRole", (int)newRole }
                 };
                 ServerMessage msg = ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onChannelOnClientRoleChangedHandler", 0, infoData, null);
                 rtcEngineControl.UploadMessageToServer(msg);
@@ -675,14 +676,14 @@ namespace agora
                 rtcEngineControl.UploadMessageToServer(msg);
             }
 
-            void OnChannelOnUserOffLineHandler(string channelId, uint uid, int reason)
+            void OnChannelOnUserOffLineHandler(string channelId, uint uid, USER_OFFLINE_REASON reason)
             {
                 channelStreamViewManager.ChannelRemoveRemoteStreamView(channelId, uid);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
                     { "channelId", channelId },
                     { "uid", uid },
-                    { "reason", reason }
+                    { "reason", (int)reason }
                 };
                 ServerMessage msg = ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onChannelOnUserOffLineHandler", 0, infoData, null);
                 rtcEngineControl.UploadMessageToServer(msg);
@@ -810,14 +811,14 @@ namespace agora
                 rtcEngineControl.UploadMessageToServer(msg);
             }
 
-            void OnChannelOnRemoteAudioStateChangedHandler(string channelId, uint uid, int state, int reason, int elapsed)
+            void OnChannelOnRemoteAudioStateChangedHandler(string channelId, uint uid, REMOTE_AUDIO_STATE state, REMOTE_AUDIO_STATE_REASON reason, int elapsed)
             {
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
                     { "channelId", channelId },
                     { "uid", uid },
-                    { "state", state },
-                    { "reason", reason },
+                    { "state", (int)state },
+                    { "reason", (int)reason },
                     { "elapsed", elapsed }
                 };
                 ServerMessage msg = ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onChannelOnRemoteAudioStateChangedHandler", 0, infoData, null);
@@ -849,28 +850,14 @@ namespace agora
                 rtcEngineControl.UploadMessageToServer(msg);
             }
 
-            void OnChannelOnRemoteVideoSizeChangedHandler(string channelId, uint uid, int state, int reason, int elapsed)
+            void OnChannelOnRemoteVideoStateChangedHandler(string channelId, uint uid, REMOTE_VIDEO_STATE state, REMOTE_VIDEO_STATE_REASON reason, int elapsed)
             {
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
                     { "channelId", channelId },
                     { "uid", uid },
-                    { "state", state },
-                    { "reason", reason },
-                    { "elapsed", elapsed }
-                };
-                ServerMessage msg = ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onChannelOnRemoteVideoSizeChangedHandler", 0, infoData, null);
-                rtcEngineControl.UploadMessageToServer(msg);
-            }
-
-            void OnChannelOnRemoteVideoStateChangedHandler(string channelId, uint uid, int state, int reason, int elapsed)
-            {
-                Dictionary<string, object> infoData = new Dictionary<string, object>
-                {
-                    { "channelId", channelId },
-                    { "uid", uid },
-                    { "state", state },
-                    { "reason", reason },
+                    { "state", (int)state },
+                    { "reason", (int)reason },
                     { "elapsed", elapsed }
                 };
                 ServerMessage msg = ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onChannelOnRemoteVideoStateChangedHandler", 0, infoData, null);
@@ -906,37 +893,37 @@ namespace agora
                 rtcEngineControl.UploadMessageToServer(msg);
             }
 
-            void OnChannelOnMediaRelayStateChangedHandler(string channelId, int state, int code)
+            void OnChannelOnMediaRelayStateChangedHandler(string channelId, CHANNEL_MEDIA_RELAY_STATE state, CHANNEL_MEDIA_RELAY_ERROR code)
             {
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
                     { "channelId", channelId },
-                    { "state", state },
-                    { "code", code }
+                    { "state", (int)state },
+                    { "code", (int)code }
                 };
                 ServerMessage msg = ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onChannelOnMediaRelayStateChangedHandler", 0, infoData, null);
                 rtcEngineControl.UploadMessageToServer(msg);
             }
 
-            void OnChannelOnMediaRelayEventHandler(string channelId, int code)
+            void OnChannelOnMediaRelayEventHandler(string channelId, CHANNEL_MEDIA_RELAY_EVENT events)
             {
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
                     { "channelId", channelId },
-                    { "code", code }
+                    { "events", (int)events }
                 };
                 ServerMessage msg = ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onChannelOnMediaRelayEventHandler", 0, infoData, null);
                 rtcEngineControl.UploadMessageToServer(msg);
             }
 
-            void OnChannelOnRtmpStreamingStateChangedHandler(string channelId, string url, int state, int errCode)
+            void OnChannelOnRtmpStreamingStateChangedHandler(string channelId, string url, RTMP_STREAM_PUBLISH_STATE state, RTMP_STREAM_PUBLISH_ERROR errCode)
             {
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
                     { "channelId", channelId },
                     { "url", url },
-                    { "state", state },
-                    { "errCode", errCode }
+                    { "state", (int)state },
+                    { "errCode", (int)errCode }
                 };
                 ServerMessage msg = ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onChannelOnRtmpStreamingStateChangedHandler", 0, infoData, null);
                 rtcEngineControl.UploadMessageToServer(msg);
@@ -977,13 +964,13 @@ namespace agora
                 rtcEngineControl.UploadMessageToServer(msg);
             }
 
-            void OnChannelOnConnectionStateChangedHandler(string channelId, int state, int reason)
+            void OnChannelOnConnectionStateChangedHandler(string channelId, CONNECTION_STATE_TYPE state, CONNECTION_CHANGED_REASON_TYPE reason)
             {
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
                     { "channelId", channelId },
-                    { "state", state },
-                    { "reason", reason }
+                    { "state", (int)state },
+                    { "reason", (int)reason }
                 };
                 ServerMessage msg = ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onChannelOnConnectionStateChangedHandler", 0, infoData, null);
                 rtcEngineControl.UploadMessageToServer(msg);

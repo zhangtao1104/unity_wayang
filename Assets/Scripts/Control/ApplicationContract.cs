@@ -238,8 +238,10 @@ namespace agora
             {
                 string s = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"createChannel\", \"info\":{\"channelId\":\"yifantt\"},\"extra\":{}}";
                 string s1 = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"joinChannel\", \"info\":{\"channelId\":\"yifantt\", \"token\":\"\",\"info\":\"1\",\"uid\":111111,\"autoSubscribeAudio\":true, \"autoSubscribeVideo\":true},\"extra\":{}}";
+                string s2 = "{\"type\":1, \"device\":\"Unity_1001\", \"cmd\" :\"publish\", \"info\":{\"channelId\":\"yifantt\"},\"extra\":{}}";
                 Send(s);
                 Send(s1);
+                Send(s2);
             }
             public void OnLeaveChannelClicked()
             {

@@ -83,7 +83,7 @@ namespace agora
                 {
                     foreach (var uid in channelUidListDict[channelId])
                     {
-                        UnityEngine.GameObject go = UnityEngine.GameObject.Find(channelId = "_" + uid.ToString());
+                        UnityEngine.GameObject go = UnityEngine.GameObject.Find(channelId + "_" + uid.ToString());
                         if (go != null)
                         {
                             UnityEngine.Object.Destroy(go);

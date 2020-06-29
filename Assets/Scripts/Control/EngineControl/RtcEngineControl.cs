@@ -2005,7 +2005,7 @@ namespace agora
                 UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onVideoSizeChanged", 0, infoData, null));
             }
 
-            void OnClientRoleChangedHandler(CLIENT_ROLE_TYPE oldRole, CLIENT_ROLE_TYPE newRole)
+            void OnClientRoleChangedHandler(CLIENT_ROLE oldRole, CLIENT_ROLE newRole)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("oldRole", (int)oldRole);
