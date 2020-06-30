@@ -84,7 +84,16 @@ namespace agora
             public ServerMessage create(ServerMessage message)
             {
                 string appId = (string)(message.info["appId"]);
-                mRtcEngine = IRtcEngine.GetEngine(appId);
+                if (message.info.Keys.Contains("areaCode"))
+                {
+                    int areaCode = (int)message.info["areaCode"];
+                    RtcEngineConfig config = new RtcEngineConfig(appId, (AREA_CODE)areaCode);
+                    mRtcEngine = IRtcEngine.GetEngine(config);
+                }
+                else
+                {
+                    mRtcEngine = IRtcEngine.GetEngine(appId);
+                }
 
                 //mRtcEngine.EnableAudio();
                 //mRtcEngine.EnableVideo();
@@ -1854,12 +1863,22 @@ namespace agora
             {
                 bool enable = (bool)message.info["enable"];
                 BeautyOptions beautyOptions = JSON.JsonToObject<BeautyOptions>(message.info["beautyOptions"].ToJson());
+                //int lighteningContrastLevel = (int)message.info["lighteningContrastLevel"];
+                //double lighteningLevel = (double)message.info["lighteningLevel"];
+                //double smoothnessLevel = (double)message.info["smoothnessLevel"];
+                //double rednessLevel = (double)message.info["rednessLevel"];
+
+                //BeautyOptions beauty = new BeautyOptions();
+                //beauty.lighteningContrastLevel = (BeautyOptions.LIGHTENING_CONTRAST_LEVEL)lighteningContrastLevel;
+                //beauty.lighteningLevel = (float)lighteningLevel;
+                //beauty.smoothnessLevel = (float)smoothnessLevel;
+                //beauty.rednessLevel = (float)rednessLevel;
                 int ret = mRtcEngine.SetBeautyEffectOptions(enable, beautyOptions);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
                 infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
-            } 
+            }
 
             public ServerMessage setInEarMonitoringVolume(ServerMessage message)
             {
@@ -2047,7 +2066,18 @@ namespace agora
             public ServerMessage startScreenCaptureByWindowId(ServerMessage message)
             {
                 return null;
-            }  
+            }
+
+            public ServerMessage setAudioMixingPitch(ServerMessage message)
+            {
+                int pitch = (int)message.info["pitch"];
+                int ret = mRtcEngine.SetAudioMixingPitch(pitch);
+                Dictionary<string, object> infoData = new Dictionary<string, object>();
+                infoData.Add("return", ret);
+                infoData.Add("error", ret);
+                return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
+            }
+
 
             public void OnJoinChannelSuccessHandler(string channelName, uint uid, int elapsed)
             {
