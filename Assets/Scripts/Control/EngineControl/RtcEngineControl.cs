@@ -225,6 +225,15 @@ namespace agora
                 return IRtcEngine.GetSdkVersion();
             }
 
+            public ServerMessage getDocumentPath(ServerMessage message)
+            {
+                string docPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+                Dictionary<string, object> infoData = new Dictionary<string, object>();
+                infoData.Add("return", docPath);
+                infoData.Add("error", 0);
+                return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
+            }
+
             public ServerMessage getSdkVersion(ServerMessage message)
             {
                 string version = IRtcEngine.GetSdkVersion();
