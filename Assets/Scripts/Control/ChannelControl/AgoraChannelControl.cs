@@ -69,7 +69,8 @@ namespace agora
                 }
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", 0 }
+                    { "return", 0 },
+                    { "error", 0 }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -86,7 +87,8 @@ namespace agora
 
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", 0 }
+                    { "return", 0 },
+                    { "error", 0 }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -108,7 +110,8 @@ namespace agora
 
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -128,7 +131,8 @@ namespace agora
                 channelStreamViewManager.ChannelAddLocalStreamView();
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -141,7 +145,8 @@ namespace agora
                 int ret = channel.LeaveChannel();
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -154,7 +159,8 @@ namespace agora
                 int ret = channel.Publish();
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -167,7 +173,8 @@ namespace agora
                 int ret = channel.Unpublish();
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -180,7 +187,8 @@ namespace agora
                 string ret = channel.ChannelId();
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", 0 }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -193,7 +201,8 @@ namespace agora
                 string ret = channel.GetCallId();
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", 0 }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -207,7 +216,8 @@ namespace agora
                 int ret = channel.RenewToken(token);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -221,7 +231,8 @@ namespace agora
                 int ret = channel.SetEncryptionSecret(secret);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
 
@@ -236,7 +247,8 @@ namespace agora
                 int ret = channel.SetEncryptionMode(encryptionMode);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -250,7 +262,8 @@ namespace agora
                 int ret = channel.SetClientRole((CLIENT_ROLE)clientRole);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -266,7 +279,8 @@ namespace agora
                 int ret = channel.SetRemoteUserPriority((uint)uid, (PRIORITY_TYPE)userPriority);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -282,7 +296,8 @@ namespace agora
                 int ret = channel.SetRemoteVoicePosition((uint)uid, pan, gain);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -298,7 +313,8 @@ namespace agora
                 int ret = channel.SetRemoteRenderMode((uint)uid, renderMode, mirrorMode);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -312,7 +328,8 @@ namespace agora
                 int ret = channel.SetDefaultMuteAllRemoteAudioStreams(mute);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -326,7 +343,8 @@ namespace agora
                 int ret = channel.SetDefaultMuteAllRemoteVideoStreams(mute);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -340,7 +358,8 @@ namespace agora
                 int ret = channel.MuteAllRemoteAudioStreams(mute);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -355,7 +374,8 @@ namespace agora
                 int ret = channel.AdjustUserPlaybackSignalVolume((uint)userId, volume);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -370,7 +390,8 @@ namespace agora
                 int ret = channel.MuteRemoteAudioStream((uint)userId, mute);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -384,7 +405,8 @@ namespace agora
                 int ret = channel.MuteAllRemoteVideoStreams(mute);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -399,7 +421,8 @@ namespace agora
                 int ret = channel.MuteRemoteVideoStream((uint)userId, mute);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -414,7 +437,8 @@ namespace agora
                 int ret = channel.SetRemoteVideoStreamType((uint)userId, (REMOTE_VIDEO_STREAM_TYPE)streamType);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -428,7 +452,8 @@ namespace agora
                 int ret = channel.SetRemoteDefaultVideoStreamType((REMOTE_VIDEO_STREAM_TYPE)streamType);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -443,7 +468,8 @@ namespace agora
                 int ret = channel.CreateDataStream(reliable, ordered);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -459,7 +485,8 @@ namespace agora
                 int ret = channel.SendStreamMessage(streamId, data, length);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -474,7 +501,8 @@ namespace agora
                 int ret = channel.AddPublishStreamUrl(url, transcodingEnabled);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -488,7 +516,8 @@ namespace agora
                 int ret = channel.RemovePublishStreamUrl(url);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -502,7 +531,8 @@ namespace agora
                 int ret = channel.SetLiveTranscoding(liveTranscoding);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -517,7 +547,8 @@ namespace agora
                 int ret = channel.AddInjectStreamUrl(url, streamConfig);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -531,7 +562,8 @@ namespace agora
                 int ret = channel.RemoveInjectStreamUrl(url);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -545,7 +577,8 @@ namespace agora
                 int ret = channel.StartChannelMediaRelay(channelMediaRelayConfiguration);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -559,7 +592,8 @@ namespace agora
                 int ret = channel.UpdateChannelMediaRelay(channelMediaRelayConfiguration);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -572,7 +606,8 @@ namespace agora
                 int ret = channel.StopChannelMediaRelay();
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", ret }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -585,7 +620,8 @@ namespace agora
                 int ret = (int)channel.GetConnectionState();
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
-                    { "return", ret }
+                    { "return", ret },
+                    { "error", 0 }
                 };
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }

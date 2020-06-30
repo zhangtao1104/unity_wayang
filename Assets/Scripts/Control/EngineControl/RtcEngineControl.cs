@@ -104,6 +104,7 @@ namespace agora
                 InitCallback();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", 0);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -205,6 +206,7 @@ namespace agora
                 mRtcEngine = null;
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", 0);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -229,6 +231,7 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", version);
                 infoData.Add("version", version);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -238,6 +241,7 @@ namespace agora
                 int ret = mRtcEngine.SetMultiChannelWant(want);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -252,6 +256,7 @@ namespace agora
                 
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -261,6 +266,7 @@ namespace agora
                 int ret = mRtcEngine.SetLocalVoicePitch(pitch);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
                      
@@ -272,6 +278,7 @@ namespace agora
                 int ret = audioEffectManager.SetRemoteVoicePosition((uint)uid, pan, gain);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }  
 
@@ -286,6 +293,7 @@ namespace agora
                 int ret = mRtcEngine.LeaveChannel();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }  
 
@@ -294,6 +302,7 @@ namespace agora
                 int ret = mRtcEngine.EnableLastmileTest();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }            
             public ServerMessage disableLastmileTest(ServerMessage message)
@@ -301,6 +310,7 @@ namespace agora
                 int ret = mRtcEngine.DisableLastmileTest();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }   
 
@@ -309,6 +319,7 @@ namespace agora
                 int ret = mRtcEngine.EnableVideo();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }  
 
@@ -317,6 +328,7 @@ namespace agora
                 int ret = mRtcEngine.EnableVideoObserver();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }  
 
@@ -325,6 +337,7 @@ namespace agora
                 int ret = mRtcEngine.DisableVideo();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }           
 
@@ -333,6 +346,7 @@ namespace agora
                 int ret = mRtcEngine.DisableVideoObserver();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }  
 
@@ -342,6 +356,7 @@ namespace agora
                 int ret = mRtcEngine.EnableLocalVideo(enabled);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }   
 
@@ -351,6 +366,7 @@ namespace agora
                 int ret = mRtcEngine.EnableLocalAudio(enabled);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }            
 
@@ -359,6 +375,7 @@ namespace agora
                 int ret = mRtcEngine.StartPreview();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
                        
@@ -367,6 +384,7 @@ namespace agora
                 int ret = mRtcEngine.StopPreview();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -375,6 +393,7 @@ namespace agora
                 int ret = mRtcEngine.EnableAudio();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }  
 
@@ -383,6 +402,7 @@ namespace agora
                 int ret = mRtcEngine.DisableAudio();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -392,6 +412,7 @@ namespace agora
                 int ret = mRtcEngine.SetParameters(parameter);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }   
 
@@ -400,6 +421,7 @@ namespace agora
                 string ret = (string)mRtcEngine.GetCallId();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             // caller free the returned char * (through freeObject)
@@ -412,6 +434,7 @@ namespace agora
                 int ret = mRtcEngine.Rate(callId, rating, description);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -422,6 +445,7 @@ namespace agora
                 int ret = mRtcEngine.Complain(callId, description);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -431,6 +455,7 @@ namespace agora
                 int ret = mRtcEngine.SetEnableSpeakerphone(enabled);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }  
 
@@ -440,6 +465,7 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", enabled);
                 infoData.Add("enable", enabled);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }  
 
@@ -449,6 +475,7 @@ namespace agora
                 int ret = mRtcEngine.SetDefaultAudioRouteToSpeakerphone(enabled);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }           
             public ServerMessage enableAudioVolumeIndication(ServerMessage message)
@@ -459,6 +486,7 @@ namespace agora
                 int ret = mRtcEngine.EnableAudioVolumeIndication(interval, smooth, report_vad);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }        
             public ServerMessage startAudioRecording(ServerMessage message)
@@ -468,6 +496,7 @@ namespace agora
                 int ret = mRtcEngine.StartAudioRecording(filePath, quality);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }         
             public ServerMessage startAudioRecording2(ServerMessage message)
@@ -479,6 +508,7 @@ namespace agora
                 int ret = mRtcEngine.StopAudioRecording();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }           
             public ServerMessage startAudioMixing(ServerMessage message)
@@ -490,6 +520,7 @@ namespace agora
                 int ret = mRtcEngine.StartAudioMixing(filePath, loopback, replace, cycle);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }           
             public ServerMessage stopAudioMixing(ServerMessage message)
@@ -497,6 +528,7 @@ namespace agora
                 int ret = mRtcEngine.StopAudioMixing();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -505,6 +537,7 @@ namespace agora
                 int ret = mRtcEngine.PauseAudioMixing();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -513,6 +546,7 @@ namespace agora
                 int ret = mRtcEngine.ResumeAudioMixing();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -522,6 +556,7 @@ namespace agora
                 int ret = mRtcEngine.AdjustAudioMixingVolume(volume);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -530,6 +565,7 @@ namespace agora
                 int ret = mRtcEngine.GetAudioMixingDuration();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -539,6 +575,7 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
                 infoData.Add("position", ret);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -548,6 +585,7 @@ namespace agora
                 int ret = mRtcEngine.MuteLocalAudioStream(muted);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }  
 
@@ -557,6 +595,7 @@ namespace agora
                 int ret = mRtcEngine.MuteAllRemoteAudioStreams(muted);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -567,6 +606,7 @@ namespace agora
                 int ret = mRtcEngine.MuteRemoteAudioStream((uint)uid, muted);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -575,6 +615,7 @@ namespace agora
                 int ret = mRtcEngine.SwitchCamera();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -585,6 +626,7 @@ namespace agora
                 int ret = mRtcEngine.SetVideoProfile((VIDEO_PROFILE_TYPE)profile, swap);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -594,6 +636,7 @@ namespace agora
                 int ret = mRtcEngine.MuteLocalVideoStream(muted);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -603,6 +646,7 @@ namespace agora
                 int ret = mRtcEngine.MuteAllRemoteVideoStreams(muted);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -613,6 +657,7 @@ namespace agora
                 int ret = mRtcEngine.MuteRemoteVideoStream((uint)uid, muted);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }            
 
@@ -622,6 +667,7 @@ namespace agora
                 int ret = mRtcEngine.SetLogFile(filePath);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }  
 
@@ -631,6 +677,7 @@ namespace agora
                 int ret = mRtcEngine.RenewToken(token);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -640,6 +687,7 @@ namespace agora
                 int ret = mRtcEngine.SetChannelProfile((CHANNEL_PROFILE)profile);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -649,6 +697,7 @@ namespace agora
                 int ret = mRtcEngine.SetClientRole((CLIENT_ROLE)role);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }            
             public ServerMessage enableDualStreamMode(ServerMessage message)
@@ -657,6 +706,7 @@ namespace agora
                 int ret = mRtcEngine.EnableDualStreamMode(enable);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }   
 
@@ -666,6 +716,7 @@ namespace agora
                 int ret = mRtcEngine.SetEncryptionMode(encryptionMode);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -675,6 +726,7 @@ namespace agora
                 int ret = mRtcEngine.SetEncryptionSecret(secret);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
            
@@ -685,6 +737,7 @@ namespace agora
                 int ret = mRtcEngine.CreateDataStream(reliable, ordered);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -696,6 +749,7 @@ namespace agora
                 int ret = mRtcEngine.SendStreamMessage(streamId, messages);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }            
             public ServerMessage setSpeakerphoneVolume(ServerMessage message)
@@ -704,6 +758,7 @@ namespace agora
                 int ret = mRtcEngine.SetEnableSpeakerphone(volume);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }           
             public ServerMessage adjustRecordingSignalVolume(ServerMessage message)
@@ -712,6 +767,7 @@ namespace agora
                 int ret = mRtcEngine.AdjustRecordingSignalVolume(volume);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }            
             public ServerMessage adjustPlaybackSignalVolume(ServerMessage message)
@@ -720,6 +776,7 @@ namespace agora
                 int ret = mRtcEngine.AdjustPlaybackSignalVolume(volume);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }            
            
@@ -729,6 +786,7 @@ namespace agora
                 int ret = mRtcEngine.EnableInEarMonitoring(enabled);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }           
             public ServerMessage enableWebSdkInteroperability(ServerMessage message)
@@ -737,6 +795,7 @@ namespace agora
                 int ret = mRtcEngine.EnableWebSdkInteroperability(enabled);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }            
           
@@ -745,6 +804,7 @@ namespace agora
                 int ret = mRtcEngine.StartEchoTest();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }           
           
@@ -753,6 +813,7 @@ namespace agora
                 int ret = mRtcEngine.StopEchoTest();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -763,6 +824,7 @@ namespace agora
                 int ret = mRtcEngine.SetRemoteVideoStreamType((uint)uid, (REMOTE_VIDEO_STREAM_TYPE)streamType);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -773,6 +835,7 @@ namespace agora
                 int ret = mRtcEngine.SetMixedAudioFrameParameters(sampleRate, samplesPerCall);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -782,6 +845,7 @@ namespace agora
                 int ret = mRtcEngine.SetAudioMixingPosition(position);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -792,6 +856,7 @@ namespace agora
                 int ret = mRtcEngine.SetLogFilter((LOG_FILTER)fileter);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }         
           
@@ -825,6 +890,7 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
                 infoData.Add("volume", ret);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
 
             }           
@@ -834,6 +900,7 @@ namespace agora
                 int ret = audioEffectManager.SetEffectsVolume(volume);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }            
             public ServerMessage playEffect(ServerMessage message)
@@ -848,6 +915,7 @@ namespace agora
                 int ret = audioEffectManager.PlayEffect(soundId, filePath, loopCount, pitch, pan, gain, publish);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }           
             public ServerMessage stopEffect(ServerMessage message)
@@ -856,6 +924,7 @@ namespace agora
                 int ret = audioEffectManager.StopEffect(soundId);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }            
             public ServerMessage stopAllEffects(ServerMessage message)
@@ -863,6 +932,7 @@ namespace agora
                 int ret = audioEffectManager.StopAllEffects();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }            
             public ServerMessage preloadEffect(ServerMessage message)
@@ -872,6 +942,7 @@ namespace agora
                 int ret = audioEffectManager.PreloadEffect(soundId, filePath);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }           
             public ServerMessage unloadEffect(ServerMessage message)
@@ -880,6 +951,7 @@ namespace agora
                 int ret = audioEffectManager.UnloadEffect(soundId);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }  
 
@@ -889,6 +961,7 @@ namespace agora
                 int ret = audioEffectManager.PauseEffect(soundId);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -897,6 +970,7 @@ namespace agora
                 int ret = audioEffectManager.PauseAllEffects();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }   
 
@@ -906,6 +980,7 @@ namespace agora
                 int ret = audioEffectManager.ResumeEffect(soundId);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -914,6 +989,7 @@ namespace agora
                 int ret = audioEffectManager.ResumeAllEffects();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }   
 
@@ -923,6 +999,7 @@ namespace agora
                 int ret = mRtcEngine.SetDefaultMuteAllRemoteAudioStreams(mute);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }  
 
@@ -932,6 +1009,7 @@ namespace agora
                 int ret = mRtcEngine.SetDefaultMuteAllRemoteVideoStreams(mute);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }          
 
@@ -941,6 +1019,7 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", (int)ret);
                 infoData.Add("state", (int)ret);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }   
 
@@ -951,6 +1030,7 @@ namespace agora
                 int ret = mRtcEngine.SetAudioProfile((AUDIO_PROFILE_TYPE)audioProfile, (AUDIO_SCENARIO_TYPE)scenario);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }            
 
@@ -972,6 +1052,7 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 int ret = mRtcEngine.SetVideoEncoderConfiguration(videoEncoderConfiguration);
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -981,6 +1062,7 @@ namespace agora
                 int ret = mRtcEngine.AdjustAudioMixingPlayoutVolume(volume);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage adjustAudioMixingPublishVolume(ServerMessage message)
@@ -989,6 +1071,7 @@ namespace agora
                 int ret = mRtcEngine.AdjustAudioMixingPublishVolume(volume);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -999,6 +1082,7 @@ namespace agora
                 int ret = mRtcEngine.SetVolumeOfEffect(soundId, volume);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1011,6 +1095,7 @@ namespace agora
                 int ret = mRtcEngine.SetRecordingAudioFrameParameters(sampleRate, channel, (RAW_AUDIO_FRAME_OP_MODE_TYPE)mode, samplesPerCall);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -1023,6 +1108,7 @@ namespace agora
                 int ret = mRtcEngine.SetPlaybackAudioFrameParameters(sampleRate, channel, (RAW_AUDIO_FRAME_OP_MODE_TYPE)mode, samplesPerCall);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
             public ServerMessage setLocalPublishFallbackOption(ServerMessage message)
@@ -1031,6 +1117,7 @@ namespace agora
                 int ret = mRtcEngine.SetLocalPublishFallbackOption((STREAM_FALLBACK_OPTIONS)streamFallbackOptions);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -1040,6 +1127,7 @@ namespace agora
                 int ret = mRtcEngine.SetRemoteSubscribeFallbackOption((STREAM_FALLBACK_OPTIONS)streamFallbackOptions);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1049,6 +1137,7 @@ namespace agora
                 int ret = mRtcEngine.SetRemoteDefaultVideoStreamType((REMOTE_VIDEO_STREAM_TYPE)remoteVideoStreamType);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1059,6 +1148,7 @@ namespace agora
                 int ret = mRtcEngine.AddPublishStreamUrl(url, transcodingEnabled);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1068,6 +1158,7 @@ namespace agora
                 int ret = mRtcEngine.RemovePublishStreamUrl(url);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1078,6 +1169,7 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
                 infoData.Add("description", ret);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1131,6 +1223,7 @@ namespace agora
                 int ret = mRtcEngine.SetLiveTranscoding(liveTranscoding);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage createAVideoDeviceManager(ServerMessage message)
@@ -1139,6 +1232,7 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("createSuccess", createSuccess);
                 infoData.Add("return", createSuccess);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage releaseAVideoDeviceManager(ServerMessage message)
@@ -1146,6 +1240,7 @@ namespace agora
                 int ret = videoDeviceManager.ReleaseAVideoDeviceManager();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage startVideoDeviceTest(ServerMessage message)
@@ -1163,6 +1258,7 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("count", count);
                 infoData.Add("return", count);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1176,6 +1272,7 @@ namespace agora
                 infoData.Add("return", error);
                 infoData.Add("deviceName", deviceName);
                 infoData.Add("deviceId", deviceId);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1185,6 +1282,7 @@ namespace agora
                 int error = videoDeviceManager.SetVideoDevice(deviceId);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1195,6 +1293,7 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
                 infoData.Add("deviceId", deviceId);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage creatAAudioRecordingDeviceManager(ServerMessage message)
@@ -1203,6 +1302,7 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("success", success);
                 infoData.Add("return", success);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage releaseAAudioRecordingDeviceManager(ServerMessage message)
@@ -1210,6 +1310,7 @@ namespace agora
                 int error = audioRecordingDeviceManager.ReleaseAAudioRecordingDeviceManager();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
 
             }
@@ -1219,6 +1320,7 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("count", count);
                 infoData.Add("return", count);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage getAudioRecordingDevice(ServerMessage message)
@@ -1231,6 +1333,7 @@ namespace agora
                 infoData.Add("return", error);
                 infoData.Add("deviceName", deviceName);
                 infoData.Add("deviceId", deviceId);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1240,6 +1343,7 @@ namespace agora
                 int error = audioRecordingDeviceManager.SetAudioRecordingDevice(deviceId);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
             public ServerMessage setAudioRecordingDeviceVolume(ServerMessage message)
@@ -1248,6 +1352,7 @@ namespace agora
                 int error = audioRecordingDeviceManager.SetAudioRecordingDeviceVolume(volume);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage getAudioRecordingDeviceVolume(ServerMessage message)
@@ -1260,12 +1365,14 @@ namespace agora
                     error = 0;
                     infoData.Add("return", 0);
                     infoData.Add("volume", volume);
+                    infoData.Add("error", 0);
                 }
                 else
                 {
                     error = volume;
                     infoData.Add("return", error);
                     infoData.Add("volume", 0);
+                    infoData.Add("error", error);
                 }
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
@@ -1276,6 +1383,7 @@ namespace agora
                 int error = audioRecordingDeviceManager.SetAudioRecordingDeviceMute(mute);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1285,6 +1393,7 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("isMute", isMute);
                 infoData.Add("return", isMute);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -1297,6 +1406,7 @@ namespace agora
                 infoData.Add("return", error);
                 infoData.Add("deviceId", deviceId);
                 infoData.Add("deviceName", deviceName);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1306,6 +1416,7 @@ namespace agora
                 int error = audioRecordingDeviceManager.GetCurrentRecordingDevice(ref deviceId);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 infoData.Add("deviceId", deviceId);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }      
@@ -1315,6 +1426,7 @@ namespace agora
                 int error = audioRecordingDeviceManager.StartAudioRecordingDeviceTest(interval);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }         
 
@@ -1323,6 +1435,7 @@ namespace agora
                 int error = audioRecordingDeviceManager.StopAudioRecordingDeviceTest();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage getAudioPlaybackDeviceCount(ServerMessage message)
@@ -1331,13 +1444,15 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 if (count > 0)
                 {
-                    infoData.Add("return", 0);
+                    infoData.Add("return", count);
                     infoData.Add("count", count);
+                    infoData.Add("error", 0);
                 }
                 else
                 {
                     infoData.Add("return", count);
                     infoData.Add("count", 0);
+                    infoData.Add("error", count);
                 }
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }   
@@ -1346,6 +1461,7 @@ namespace agora
                 bool error = audioPlaybackDeviceManager.CreateAAudioPlaybackDeviceManager();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }        
             public ServerMessage releaseAAudioPlaybackDeviceManager(ServerMessage message)
@@ -1353,6 +1469,7 @@ namespace agora
                 int error = audioPlaybackDeviceManager.ReleaseAAudioPlaybackDeviceManager();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }         
 
@@ -1364,6 +1481,7 @@ namespace agora
                 int error = audioPlaybackDeviceManager.GetAudioPlaybackDevice(index, ref deviceName, ref deviceId);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }   
             public ServerMessage setAudioPlaybackDevice(ServerMessage message)
@@ -1372,6 +1490,7 @@ namespace agora
                 int error = audioPlaybackDeviceManager.SetAudioPlaybackDevice(deviceId);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }          
             public ServerMessage setAudioPlaybackDeviceVolume(ServerMessage message)
@@ -1380,6 +1499,7 @@ namespace agora
                 int error = audioPlaybackDeviceManager.SetAudioPlaybackDeviceVolume(volume);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }           
             public ServerMessage getAudioPlaybackDeviceVolume(ServerMessage message)
@@ -1388,12 +1508,14 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 if (volume > 0)
                 {
-                    infoData.Add("return", 0);
+                    infoData.Add("return", volume);
                     infoData.Add("volume", volume);
+                    infoData.Add("error", 0);
                 }
                 else
                 {
                     infoData.Add("return", volume);
+                    infoData.Add("error", volume);
                     infoData.Add("volume", 0);
                 }
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
@@ -1404,6 +1526,7 @@ namespace agora
                 int error = audioPlaybackDeviceManager.SetAudioPlaybackDeviceMute(muted);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage isAudioPlaybackDeviceMute(ServerMessage message)
@@ -1412,6 +1535,7 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("mute", mute);
                 infoData.Add("return", mute);
+                infoData.Add("error", 0);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage startAudioPlaybackDeviceTest(ServerMessage message)
@@ -1420,6 +1544,7 @@ namespace agora
                 int error = audioPlaybackDeviceManager.StartAudioPlaybackDeviceTest(filePath);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1428,6 +1553,7 @@ namespace agora
                 int error = audioPlaybackDeviceManager.StopAudioPlaybackDeviceTest();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }   
 
@@ -1440,6 +1566,7 @@ namespace agora
                 infoData.Add("return", error);
                 infoData.Add("deviceName", deviceName);
                 infoData.Add("deviceId", deviceId);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }       
             public ServerMessage getCurrentPlaybackDevice(ServerMessage message)
@@ -1448,6 +1575,7 @@ namespace agora
                 int error  = audioPlaybackDeviceManager.GetCurrentPlaybackDevice(ref deviceId);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }    
             public ServerMessage pushVideoFrame(ServerMessage message)
@@ -1455,6 +1583,7 @@ namespace agora
                 int ret = mRtcEngine.PushVideoFrame(new ExternalVideoFrame());
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return null;
             }      
             public ServerMessage setExternalVideoSource(ServerMessage message)
@@ -1464,6 +1593,7 @@ namespace agora
                 int error = mRtcEngine.SetExternalVideoSource(enable, useTexture);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }       
             public ServerMessage setExternalAudioSource(ServerMessage message)
@@ -1474,6 +1604,7 @@ namespace agora
                 int error = mRtcEngine.SetExternalAudioSource(enabled, sampleRate, channels);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage pushAudioFrame(ServerMessage message)
@@ -1485,6 +1616,7 @@ namespace agora
                 int ret = videoRawDataManager.RegisterVideoRawDataObserver();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }         
             public ServerMessage unRegisterVideoRawDataObserver(ServerMessage message)
@@ -1492,6 +1624,7 @@ namespace agora
                 int ret = videoRawDataManager.UnRegisterVideoRawDataObserver();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }         
             public ServerMessage registerAudioRawDataObserver(ServerMessage message)
@@ -1499,6 +1632,7 @@ namespace agora
                 int ret = audioRawDataManager.RegisterAudioRawDataObserver();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }           
             public ServerMessage unRegisterAudioRawDataObserver(ServerMessage message)
@@ -1506,6 +1640,7 @@ namespace agora
                 int ret = audioRawDataManager.UnRegisterAudioRawDataObserver();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }        
 
@@ -1518,7 +1653,8 @@ namespace agora
             {
                 int ret = mRtcEngine.GetAudioMixingPlayoutVolume();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
-                infoData.Add("return", 0);
+                infoData.Add("return", ret);
+                infoData.Add("error", 0);
                 infoData.Add("volume", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }   
@@ -1526,7 +1662,8 @@ namespace agora
             {
                 int ret = mRtcEngine.GetAudioMixingPublishVolume();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
-                infoData.Add("return", 0);
+                infoData.Add("return", ret);
+                infoData.Add("error", 0);
                 infoData.Add("volume", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }       
@@ -1536,6 +1673,7 @@ namespace agora
                 int ret = mRtcEngine.SetLocalVoiceChanger((VOICE_CHANGER_PRESET)voice_changer_preset);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }     
             public ServerMessage setLocalVoiceReverbPreset(ServerMessage message)
@@ -1544,6 +1682,7 @@ namespace agora
                 int ret = mRtcEngine.SetLocalVoiceReverbPreset((AUDIO_REVERB_PRESET)audio_reverb_reset);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }     
             public ServerMessage enableSoundPositionIndication(ServerMessage message)
@@ -1552,6 +1691,7 @@ namespace agora
                 int ret = mRtcEngine.EnableSoundPositionIndication(enable);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }    
             public ServerMessage setLocalVoiceEqualization(ServerMessage message)
@@ -1561,6 +1701,7 @@ namespace agora
                 int ret = mRtcEngine.SetLocalVoiceEqualization((AUDIO_EQUALIZATION_BAND_FREQUENCY) bandFrequency, bandGain);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
 
             }
@@ -1571,6 +1712,7 @@ namespace agora
                 int ret = mRtcEngine.SetLocalVoiceReverb((AUDIO_REVERB_TYPE)reverbKey, value);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }  
             public ServerMessage setCameraCapturerConfiguration(ServerMessage message)
@@ -1584,6 +1726,7 @@ namespace agora
                 int ret = mRtcEngine.SetCameraCapturerConfiguration(cameraCapturerConfiguration);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }      
             public ServerMessage setRemoteUserPriority(ServerMessage message)
@@ -1593,6 +1736,7 @@ namespace agora
                 int ret = mRtcEngine.SetRemoteUserPriority((uint)uid, (PRIORITY_TYPE)priorityType);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }      
             public ServerMessage setLogFileSize(ServerMessage message)
@@ -1601,6 +1745,7 @@ namespace agora
                 int ret = mRtcEngine.SetLogFileSize((uint)size);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }       
             public ServerMessage setExternalAudioSink(ServerMessage message)
@@ -1611,6 +1756,7 @@ namespace agora
                 int ret = mRtcEngine.SetExternalAudioSink(enable, sampleRate, channels);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }      
             public ServerMessage pullAudioFrame(ServerMessage message)
@@ -1632,6 +1778,7 @@ namespace agora
                 int ret = mRtcEngine.StartLastmileProbeTest(lastmileProbeConfig);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }       
             public ServerMessage stopLastmileProbeTest(ServerMessage message)
@@ -1639,6 +1786,7 @@ namespace agora
                 int ret = mRtcEngine.StopLastmileProbeTest();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage addVideoWatermark(ServerMessage message)
@@ -1647,6 +1795,7 @@ namespace agora
                 int ret = mRtcEngine.AddVideoWatermark(rtcImage);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }    
 
@@ -1655,6 +1804,7 @@ namespace agora
                 int ret = mRtcEngine.ClearVideoWatermarks();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }        
             public ServerMessage registerLocalUserAccount(ServerMessage message)
@@ -1664,6 +1814,7 @@ namespace agora
                 int ret = mRtcEngine.RegisterLocalUserAccount(appId, userAccount);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }        
             public ServerMessage joinChannelWithUserAccount(ServerMessage message)
@@ -1674,6 +1825,7 @@ namespace agora
                 int ret = mRtcEngine.JoinChannelWithUserAccount(token, channelId, userAccount);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1696,6 +1848,7 @@ namespace agora
                 int ret = mRtcEngine.SetBeautyEffectOptions(enable, beautyOptions);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -1705,6 +1858,7 @@ namespace agora
                 int ret = mRtcEngine.SetInEarMonitoringVolume(volume);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -1721,6 +1875,7 @@ namespace agora
                 int ret = mRtcEngine.StartScreenCaptureByScreenRect(screenRectangle, regionRectangle, screenCaptureParameters);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1730,6 +1885,7 @@ namespace agora
                 int ret = mRtcEngine.SetScreenCaptureContentHint(videoContentHint);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }       
             public ServerMessage updateScreenCaptureParameters(ServerMessage message)
@@ -1738,6 +1894,7 @@ namespace agora
                 int ret = mRtcEngine.UpdateScreenCaptureParameters(screenCaptureParameters);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }          
             public ServerMessage updateScreenCaptureRegion(ServerMessage message)
@@ -1746,6 +1903,7 @@ namespace agora
                 int ret = mRtcEngine.UpdateScreenCaptureRegion(rectangle);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             } 
 
@@ -1754,6 +1912,7 @@ namespace agora
                 int ret = mRtcEngine.StopScreenCapture();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage addInjectStreamUrl(ServerMessage message)
@@ -1763,6 +1922,7 @@ namespace agora
                 int ret = mRtcEngine.AddInjectStreamUrl(url, streamConfig);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }       
             public ServerMessage removeInjectStreamUrl(ServerMessage message)
@@ -1771,6 +1931,7 @@ namespace agora
                 int ret = mRtcEngine.RemoveInjectStreamUrl(url);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1781,6 +1942,7 @@ namespace agora
                 int ret = mRtcEngine.EnableLoopbackRecording(enabled, deviceName);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }       
             public ServerMessage setAudioSessionOperationRestriction(ServerMessage message)
@@ -1789,6 +1951,7 @@ namespace agora
                 int ret = mRtcEngine.SetAudioSessionOperationRestriction(restriction);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage switchChannel(ServerMessage message)
@@ -1798,6 +1961,7 @@ namespace agora
                 int error = mRtcEngine.SwitchChannel(token, channelId);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage startChannelMediaRelay(ServerMessage message)
@@ -1806,6 +1970,7 @@ namespace agora
                 int ret = mRtcEngine.StartChannelMediaRelay(channelMediaRelayConfiguration);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage updateChannelMediaRelay(ServerMessage message)
@@ -1814,6 +1979,7 @@ namespace agora
                 int ret = mRtcEngine.UpdateChannelMediaRelay(channelMediaRelayConfiguration);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }   
             public ServerMessage stopChannelMediaRelay(ServerMessage message)
@@ -1821,6 +1987,7 @@ namespace agora
                 int ret = mRtcEngine.StopChannelMediaRelay();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage sendMetadata(ServerMessage message)
@@ -1832,6 +1999,7 @@ namespace agora
                 int ret = packetObserver.RegisterPacketObserver();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage unRegisterPacketObserver(ServerMessage message)
@@ -1839,6 +2007,7 @@ namespace agora
                 int ret = packetObserver.UnRegisterPacketObserver();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }     
             public ServerMessage registerMediaMetadataObserver(ServerMessage message)
@@ -1846,6 +2015,7 @@ namespace agora
                 int ret = metadataObserver.RegisterMediaMetadataObserver(METADATA_TYPE.VIDEO_METADATA);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage unRegisterMediaMetadataObserver(ServerMessage message)
@@ -1853,6 +2023,7 @@ namespace agora
                 int ret = metadataObserver.UnRegisterMediaMetadataObserver();
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage setMirrorApplied(ServerMessage message)
@@ -1861,6 +2032,7 @@ namespace agora
                 int ret = mRtcEngine.SetMirrorApplied(wheatherApply);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
+                infoData.Add("error", ret);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
             public ServerMessage startScreenCaptureByWindowId(ServerMessage message)
