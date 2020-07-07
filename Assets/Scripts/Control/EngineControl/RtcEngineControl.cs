@@ -240,7 +240,7 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", docPath);
                 infoData.Add("error", 0);
-                return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
+                return ServerMessageFactory.CreateServerMessage(TYPE.NONAPI_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
             public ServerMessage getSdkVersion(ServerMessage message)

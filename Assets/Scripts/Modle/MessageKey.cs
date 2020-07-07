@@ -8,7 +8,8 @@ namespace agora
         {
             CMD_MESSAGE = 1,
             CALLBACK_MESSAGE = 4,
-            UPLOAD_MESSAGE = 5
+            UPLOAD_MESSAGE = 5,
+            NONAPI_MESSAGE = 6,
         }
 
         class MessageKey

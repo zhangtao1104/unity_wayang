@@ -20,7 +20,7 @@ namespace agora
             {
                 
                 ServerMessage message = JSON.JsonToObject<ServerMessage>(json);
-                if (message.type == (int)TYPE.CMD_MESSAGE && message.device == Application.DeviceID)
+                if ((message.type == (int)TYPE.CMD_MESSAGE || message.type == 2) && message.device == Application.DeviceID)
                 {
                     //Application.Logger.Info(TAG, "JsonFromServer send message type is " + (int)message.type);
                     Application.Logger.Info(TAG, "JsonFromServer json = " + json);
