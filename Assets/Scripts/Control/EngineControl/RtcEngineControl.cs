@@ -762,9 +762,11 @@ namespace agora
             // TODO! supports general data later. now only string is supported           
             public ServerMessage sendStreamMessage(ServerMessage message)
             {
+                
                 int streamId = (int)message.info["streamId"];
                 string messages = (string)message.info["message"];
-                int ret = mRtcEngine.SendStreamMessage(streamId, messages);
+                byte[] messageBytes = System.Text.Encoding.UTF8.GetBytes(messages);
+                int ret = mRtcEngine.SendStreamMessage(streamId, messageBytes);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
                 infoData.Add("error", ret);
@@ -2346,12 +2348,13 @@ namespace agora
                 UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onStreamMessageError", 0, infoData, null));
             }
 
-            void OnStreamMessageHandler(uint userId, int streamId, string data, int length)
+            void OnStreamMessageHandler(uint userId, int streamId, byte[] data, int length)
             {
+                String dataText = System.Text.Encoding.UTF8.GetString(data, 0, data.Length);
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("uid", userId);
                 infoData.Add("streamId", streamId);
-                infoData.Add("data", data);
+                infoData.Add("data", dataText);
                 infoData.Add("length", length);
                 UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onStreamMessage", 0, infoData, null));
             }
