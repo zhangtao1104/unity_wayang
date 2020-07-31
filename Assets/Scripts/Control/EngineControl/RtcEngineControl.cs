@@ -712,7 +712,7 @@ namespace agora
             public ServerMessage setClientRole(ServerMessage message)
             {
                 int role = (int)message.info["role"];
-                int ret = mRtcEngine.SetClientRole((CLIENT_ROLE)role);
+                int ret = mRtcEngine.SetClientRole((CLIENT_ROLE_TYPE)role);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
                 infoData.Add("error", ret);

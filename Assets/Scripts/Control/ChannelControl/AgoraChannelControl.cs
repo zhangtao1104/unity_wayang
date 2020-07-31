@@ -259,7 +259,7 @@ namespace agora
                 AgoraChannel channel = channelDictionary[channelId];
 
                 int clientRole = (int)message.info["role"];
-                int ret = channel.SetClientRole((CLIENT_ROLE)clientRole);
+                int ret = channel.SetClientRole((CLIENT_ROLE_TYPE)clientRole);
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
                     { "return", ret },
@@ -687,7 +687,7 @@ namespace agora
                 channelStreamViewManager.ChannelRemoveLocalStreamView();
             }
 
-            void OnChannelOnClientRoleChangedHandler(string channelId, CLIENT_ROLE oldRole, CLIENT_ROLE newRole)
+            void OnChannelOnClientRoleChangedHandler(string channelId, CLIENT_ROLE_TYPE oldRole, CLIENT_ROLE_TYPE newRole)
             {
                 Dictionary<string, object> infoData = new Dictionary<string, object>
                 {
