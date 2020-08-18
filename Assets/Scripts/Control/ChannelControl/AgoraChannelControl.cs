@@ -148,6 +148,8 @@ namespace agora
                     { "return", ret },
                     { "error", ret }
                 };
+                channelStreamViewManager.ChannelRemoveAllRemoteStreamViews(channelId);
+                channelStreamViewManager.ChannelRemoveLocalStreamView();
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -682,9 +684,6 @@ namespace agora
                 };
                 ServerMessage msg = ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onChannelOnLeaveChannelHandler", 0, infoData, null);
                 rtcEngineControl.UploadMessageToServer(msg);
-
-                channelStreamViewManager.ChannelRemoveAllRemoteStreamViews(channelId);
-                channelStreamViewManager.ChannelRemoveLocalStreamView();
             }
 
             void OnChannelOnClientRoleChangedHandler(string channelId, CLIENT_ROLE_TYPE oldRole, CLIENT_ROLE_TYPE newRole)
