@@ -1856,7 +1856,7 @@ namespace agora
             public ServerMessage joinChannelWithUserAccount(ServerMessage message)
             {
                 string token = (string)message.info["token"];
-                string channelId = (string)message.info["channelId"];
+                string channelId = (string)message.info["channelName"];
                 string userAccount = (string)message.info["userAccount"];
                 int ret = mRtcEngine.JoinChannelWithUserAccount(token, channelId, userAccount);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
@@ -2110,6 +2110,29 @@ namespace agora
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
+                infoData.Add("duration", stats.duration);
+                infoData.Add("txBytes", stats.txBytes);
+                infoData.Add("rxBytes", stats.rxBytes);
+                infoData.Add("txAudioBytes", stats.txAudioBytes);
+                infoData.Add("txVideoBytes", stats.txVideoBytes);
+                infoData.Add("rxAudioBytes", stats.rxAudioBytes);
+                infoData.Add("rxVideoBytes", stats.rxVideoBytes);
+                infoData.Add("txKBitRate", stats.txKBitRate);
+                infoData.Add("rxKBitRate", stats.rxKBitRate);
+                infoData.Add("rxAudioKBitRate", stats.rxAudioKBitRate);
+                infoData.Add("txAudioKBitRate", stats.txAudioKBitRate);
+                infoData.Add("rxVideoKBitRate", stats.rxVideoKBitRate);
+                infoData.Add("txVideoKBitRate", stats.txVideoKBitRate);
+                infoData.Add("lastmileDelay", (int)stats.lastmileDelay);
+                infoData.Add("txPacketLossRate", (int)stats.txPacketLossRate);
+                infoData.Add("rxPacketLossRate", (int)stats.rxPacketLossRate);
+                infoData.Add("userCount", stats.userCount);
+                infoData.Add("cpuAppUsage", stats.cpuAppUsage);
+                infoData.Add("cpuTotalUsage", stats.cpuTotalUsage);
+                infoData.Add("gatewayRtt", stats.gatewayRtt);
+                infoData.Add("memoryAppUsageRatio", stats.memoryAppUsageRatio);
+                infoData.Add("memoryTotalUsageRatio", stats.memoryTotalUsageRatio);
+                infoData.Add("memoryAppUsageInKbytes", stats.memoryAppUsageInKbytes);
                 UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onLeaveChannel", 0, infoData, null));
                 streamViewManager.RemoveAllRemoteStreamViews();
             }
@@ -2325,8 +2348,8 @@ namespace agora
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("uid", userId);
                 infoData.Add("quality", quality);
-                infoData.Add("delay", delay);
-                infoData.Add("lost", lost);
+                infoData.Add("delay", (int)delay);
+                infoData.Add("lost", (int)lost);
                 UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onAudioQuality", 0, infoData, null));
             }
         
@@ -2485,13 +2508,37 @@ namespace agora
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
+                infoData.Add("sentFrameRate", localVideoStats.sentFrameRate);
+                infoData.Add("sentBitrate", localVideoStats.sentBitrate);
+                infoData.Add("encoderOutputFrameRate", localVideoStats.encoderOutputFrameRate);
+                infoData.Add("rendererOutputFrameRate", localVideoStats.rendererOutputFrameRate);
+                infoData.Add("targetBitrate", localVideoStats.targetBitrate);
+                infoData.Add("targetFrameRate", localVideoStats.targetFrameRate);
+                infoData.Add("qualityAdaptIndication", (int)localVideoStats.qualityAdaptIndication);
+                infoData.Add("encodedBitrate", localVideoStats.encodedBitrate);
+                infoData.Add("encodedFrameWidth", localVideoStats.encodedFrameWidth);
+                infoData.Add("encodedFrameHeight", localVideoStats.encodedFrameHeight);
+                infoData.Add("encodedFrameCount", localVideoStats.encodedFrameCount);
+                infoData.Add("codecType", localVideoStats.codecType);
                 UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onLocalVideoStats", 0, infoData, null));
-            }
+        }
 
             void OnRemoteVideoStatsHandler(RemoteVideoStats remoteVideoStats)
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
+                infoData.Add("uid", remoteVideoStats.uid);
+                infoData.Add("delay", remoteVideoStats.delay);
+                infoData.Add("width", remoteVideoStats.width);
+                infoData.Add("height", remoteVideoStats.height);
+                infoData.Add("receivedBitrate", remoteVideoStats.receivedBitrate);
+                infoData.Add("decoderOutputFrameRate", remoteVideoStats.decoderOutputFrameRate);
+                infoData.Add("rendererOutputFrameRate", remoteVideoStats.rendererOutputFrameRate);
+                infoData.Add("packetLossRate", remoteVideoStats.packetLossRate);
+                infoData.Add("rxStreamType", (int)remoteVideoStats.rxStreamType);
+                infoData.Add("totalFrozenTime", remoteVideoStats.totalFrozenTime);
+                infoData.Add("frozenRate", remoteVideoStats.frozenRate);
+                infoData.Add("totalActiveTime", remoteVideoStats.totalActiveTime);
                 UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRemoteVideoStats", 0, infoData, null));
             }
 
@@ -2499,6 +2546,17 @@ namespace agora
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
+                infoData.Add("uid", remoteAudioStats.uid);
+                infoData.Add("quality", remoteAudioStats.quality);
+                infoData.Add("networkTransportDelay", remoteAudioStats.networkTransportDelay);
+                infoData.Add("jitterBufferDelay", remoteAudioStats.jitterBufferDelay);
+                infoData.Add("audioLossRate", remoteAudioStats.audioLossRate);
+                infoData.Add("numChannels", remoteAudioStats.numChannels);
+                infoData.Add("receivedSampleRate", remoteAudioStats.receivedSampleRate);
+                infoData.Add("receivedBitrate", remoteAudioStats.receivedBitrate);
+                infoData.Add("totalFrozenTime", remoteAudioStats.totalFrozenTime);
+                infoData.Add("frozenRate", remoteAudioStats.frozenRate);
+                infoData.Add("totalActiveTime", remoteAudioStats.totalActiveTime);
                 UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRemoteAudioStats", 0, infoData, null));
             }
 
@@ -2694,6 +2752,7 @@ namespace agora
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("uid", uid);
+                infoData.Add("state", state);
                 infoData.Add("reason", reason);
                 infoData.Add("elapsed", elapsed);
                 UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onRemoteAudioStateChanged", 0, infoData, null));
@@ -2703,7 +2762,7 @@ namespace agora
             {
                 Dictionary<string,object> infoData = new Dictionary<string, object>();
                 infoData.Add("error", 0);
-                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onLocalVideoStateChanged", 0, infoData, null));
+                UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onLocalAudioStats", 0, infoData, null));
             }
 
             void OnChannelMediaRelayStateChangedHandler(CHANNEL_MEDIA_RELAY_STATE state, CHANNEL_MEDIA_RELAY_ERROR code)
