@@ -114,6 +114,8 @@ namespace agora
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", 0);
                 infoData.Add("error", 0);
+                mRtcEngine.SetLogFile("/Users/dyf/Documents/log.txt");
+                mRtcEngine.SetParameters("{\"rtc.log_filter\": 65535}");
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -754,8 +756,13 @@ namespace agora
                 bool ordered = (bool)message.info["ordered"];
                 int ret = mRtcEngine.CreateDataStream(reliable, ordered);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
+                int error = 0;
+                if (ret < 0)
+                {
+                    error = ret;
+                }
                 infoData.Add("return", ret);
-                infoData.Add("error", ret);
+                infoData.Add("error", error);
                 return ServerMessageFactory.CreateServerMessage(TYPE.UPLOAD_MESSAGE, message.device, message.cmd, message.sequence, infoData, null);
             }
 
@@ -1812,6 +1819,15 @@ namespace agora
             public ServerMessage addVideoWatermark(ServerMessage message)
             {
                 RtcImage rtcImage = JSON.JsonToObject<RtcImage>(message.info["rtcImage"].ToJson());
+                WatermarkOptions options;
+                Rectangle p;
+                p.width = rtcImage.width;
+                p.height = rtcImage.height;
+                p.x = 0;
+                p.y = 0;
+                options.positionInLandscapeMode = p;
+                options.positionInPortraitMode = p;
+                options.visibleInPreview = true;
                 int ret = mRtcEngine.AddVideoWatermark(rtcImage);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", ret);
@@ -1987,7 +2003,7 @@ namespace agora
             public ServerMessage switchChannel(ServerMessage message)
             {
                 string token = (string)message.info["token"];
-                string channelId = (string)message.info["channelId"];
+                string channelId = (string)message.info["channelName"];
                 int error = mRtcEngine.SwitchChannel(token, channelId);
                 Dictionary<string, object> infoData = new Dictionary<string, object>();
                 infoData.Add("return", error);
@@ -2278,6 +2294,7 @@ namespace agora
                 infoData.Add("error", err);
                 infoData.Add("api", api);
                 infoData.Add("result", result);
+                Application.Logger.Info(TAG, "----------" + api + " : " + result);
                 UploadMessageToServer(ServerMessageFactory.CreateServerMessage(TYPE.CALLBACK_MESSAGE, Application.DeviceID, "onApiExecuted", 0, infoData, null));
             }
 

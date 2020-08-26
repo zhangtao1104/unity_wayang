@@ -51,6 +51,10 @@ namespace agora
                         {
                             message.info[a.Key] = (double)a.Value;
                         }
+                        else if (a.Value is JsonData)
+                        {
+                            message.info[a.Key] = (JsonData)a.Value;
+                        }
                         
                     }
                 }
@@ -86,6 +90,10 @@ namespace agora
                         else if (a.Value is double)
                         {
                             message.extra[a.Key] = (double)a.Value;
+                        }
+                        else if (a.Value is JsonData)
+                        {
+                            message.extra[a.Key] = (JsonData)a.Value;
                         }
                     }
                 }
