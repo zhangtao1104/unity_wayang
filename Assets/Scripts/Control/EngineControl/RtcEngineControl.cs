@@ -2412,32 +2412,32 @@ namespace agora
 
             void OnRecordAudioFrameHandler(AudioFrame audioFrame)
             {
-                Application.Logger.Info(TAG, "OnRecordAudioFrameHandler");
+                //Application.Logger.Info(TAG, "OnRecordAudioFrameHandler");
             }
 
             void OnPlaybackAudioFrameHandler(AudioFrame audioFrame)
             {
-                Application.Logger.Info(TAG, "OnPlaybackAudioFrameHandler");
+                //Application.Logger.Info(TAG, "OnPlaybackAudioFrameHandler");
             }
 
             void OnMixedAudioFrameHandler(AudioFrame audioFrame)
             {
-                Application.Logger.Info(TAG, "OnMixedAudioFrameHandler");
+                //Application.Logger.Info(TAG, "OnMixedAudioFrameHandler");
             }
 
             void OnPlaybackAudioFrameBeforeMixingHandler(uint uid, AudioFrame audioFrame)
             {
-                Application.Logger.Info(TAG, "OnPlaybackAudioFrameBeforeMixingHandler");
+                //Application.Logger.Info(TAG, "OnPlaybackAudioFrameBeforeMixingHandler");
             }
 
             void OnCaptureVideoFrameHandler(VideoFrame videoFrame)
             {
-                Application.Logger.Info(TAG, "OnCaptureVideoFrameHandler");
+                //Application.Logger.Info(TAG, "OnCaptureVideoFrameHandler");
             }
        
             void OnRenderVideoFrameHandler(uint uid, VideoFrame videoFrame)
             {
-                Application.Logger.Info(TAG, "OnRenderVideoFrameHandler");
+                //Application.Logger.Info(TAG, "OnRenderVideoFrameHandler");
             }
         }
     }
